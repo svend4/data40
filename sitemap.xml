@@ -64,6 +64,30 @@
         <priority>0.5</priority>
     </url>
 
+    <!-- Админ-панель -->
+    <url>
+        <loc>https://flowerparadise.ru/admin.html</loc>
+        <lastmod>2026-01-21</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.3</priority>
+    </url>
+
+    <!-- Карта доставки -->
+    <url>
+        <loc>https://flowerparadise.ru/delivery-map.html</loc>
+        <lastmod>2026-01-21</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- Панель аналитики -->
+    <url>
+        <loc>https://flowerparadise.ru/analytics-dashboard.html</loc>
+        <lastmod>2026-01-21</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.4</priority>
+    </url>
+
     <!-- Отслеживание заказов -->
     <url>
         <loc>https://flowerparadise.ru/tracking.html</loc>
