@@ -30,6 +30,9 @@ function initializeAccountPage() {
     // Load loyalty program
     loadLoyalty();
 
+    // Load reminders
+    loadReminders();
+
     // Load favorites
     loadFavorites();
 
@@ -259,5 +262,13 @@ function loadLoyalty() {
     const user = AuthAPI.getCurrentUser();
     if (typeof LoyaltyAPI !== 'undefined') {
         LoyaltyAPI.renderLoyaltyWidget(user.id);
+    }
+}
+
+// Load reminders calendar
+function loadReminders() {
+    const user = AuthAPI.getCurrentUser();
+    if (typeof RemindersAPI !== 'undefined') {
+        RemindersAPI.renderRemindersCalendar(user.id);
     }
 }
