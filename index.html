@@ -37,8 +37,40 @@
     <section id="catalog" class="catalog">
         <div class="container">
             <h2>Наш каталог</h2>
+
+            <!-- Filters and Search -->
+            <div class="catalog-controls">
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="🔍 Поиск по названию..." onkeyup="filterFlowers()">
+                </div>
+                <div class="filters">
+                    <select id="price-filter" onchange="filterFlowers()">
+                        <option value="all">Все цены</option>
+                        <option value="0-2000">До 2000 ₽</option>
+                        <option value="2000-3000">2000-3000 ₽</option>
+                        <option value="3000-5000">От 3000 ₽</option>
+                    </select>
+                    <select id="type-filter" onchange="filterFlowers()">
+                        <option value="all">Все типы</option>
+                        <option value="roses">Розы</option>
+                        <option value="tulips">Тюльпаны</option>
+                        <option value="lilies">Лилии</option>
+                        <option value="sunflowers">Подсолнухи</option>
+                        <option value="gerberas">Герберы</option>
+                        <option value="peonies">Пионы</option>
+                        <option value="chrysanthemums">Хризантемы</option>
+                        <option value="orchids">Орхидеи</option>
+                        <option value="wildflowers">Полевые</option>
+                    </select>
+                    <button class="btn-reset" onclick="resetFilters()">Сбросить</button>
+                </div>
+            </div>
+
             <div class="flower-grid" id="flower-grid">
                 <!-- Flowers will be added by JavaScript -->
+            </div>
+            <div id="no-results" class="no-results" style="display: none;">
+                <p>К сожалению, ничего не найдено. Попробуйте изменить параметры поиска.</p>
             </div>
         </div>
     </section>
@@ -100,7 +132,110 @@
                 <div class="cart-total">
                     <strong>Итого: <span id="cart-total">0</span> ₽</strong>
                 </div>
-                <button class="btn-primary" onclick="checkout()">Оформить заказ</button>
+                <button class="btn-primary" onclick="openCheckoutForm()">Оформить заказ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Detail Modal -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2 id="product-modal-title">Детали товара</h2>
+                <span class="close" onclick="closeProductModal()">&times;</span>
+            </div>
+            <div class="product-detail" id="product-detail">
+                <!-- Product details will be added here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Form Modal -->
+    <div id="checkout-modal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2>Оформление заказа</h2>
+                <span class="close" onclick="closeCheckoutForm()">&times;</span>
+            </div>
+            <div class="checkout-form-container">
+                <form id="checkout-form" onsubmit="submitOrder(event)">
+                    <div class="form-section">
+                        <h3>Контактная информация</h3>
+                        <div class="form-group">
+                            <label for="customer-name">Имя *</label>
+                            <input type="text" id="customer-name" required placeholder="Ваше имя">
+                        </div>
+                        <div class="form-group">
+                            <label for="customer-phone">Телефон *</label>
+                            <input type="tel" id="customer-phone" required placeholder="+7 (___) ___-__-__">
+                        </div>
+                        <div class="form-group">
+                            <label for="customer-email">Email</label>
+                            <input type="email" id="customer-email" placeholder="example@email.com">
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Доставка</h3>
+                        <div class="form-group">
+                            <label for="delivery-type">Способ доставки *</label>
+                            <select id="delivery-type" required onchange="toggleAddressField()">
+                                <option value="">Выберите способ доставки</option>
+                                <option value="courier">Курьерская доставка (+300 ₽)</option>
+                                <option value="pickup">Самовывоз (бесплатно)</option>
+                                <option value="express">Экспресс-доставка (+600 ₽)</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="address-field" style="display: none;">
+                            <label for="delivery-address">Адрес доставки *</label>
+                            <input type="text" id="delivery-address" placeholder="Улица, дом, квартира">
+                        </div>
+                        <div class="form-group">
+                            <label for="delivery-date">Дата доставки *</label>
+                            <input type="date" id="delivery-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="delivery-time">Время доставки *</label>
+                            <select id="delivery-time" required>
+                                <option value="">Выберите время</option>
+                                <option value="09:00-12:00">09:00 - 12:00</option>
+                                <option value="12:00-15:00">12:00 - 15:00</option>
+                                <option value="15:00-18:00">15:00 - 18:00</option>
+                                <option value="18:00-21:00">18:00 - 21:00</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Дополнительно</h3>
+                        <div class="form-group">
+                            <label for="gift-card">Текст открытки</label>
+                            <textarea id="gift-card" rows="3" placeholder="Ваше поздравление (максимум 200 символов)" maxlength="200"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="order-comment">Комментарий к заказу</label>
+                            <textarea id="order-comment" rows="3" placeholder="Особые пожелания или инструкции"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="order-summary">
+                        <h3>Итого к оплате</h3>
+                        <div class="summary-line">
+                            <span>Товары:</span>
+                            <span id="summary-items">0 ₽</span>
+                        </div>
+                        <div class="summary-line">
+                            <span>Доставка:</span>
+                            <span id="summary-delivery">0 ₽</span>
+                        </div>
+                        <div class="summary-line total">
+                            <strong>Итого:</strong>
+                            <strong id="summary-total">0 ₽</strong>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary btn-full">Подтвердить заказ</button>
+                </form>
             </div>
         </div>
     </div>
