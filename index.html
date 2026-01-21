@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Цветочный Рай - Магазин цветов</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="theme.css">
 </head>
 <body>
     <header>
@@ -19,7 +20,9 @@
                     <li><a href="blog.html">Блог</a></li>
                     <li><a href="faq.html">FAQ</a></li>
                     <li><a href="delivery.html">Доставка</a></li>
-                    <li><a href="#about">О нас</a></li>
+                    <li><a href="about.html">О нас</a></li>
+                    <li><a href="contacts.html">Контакты</a></li>
+                    <li><a href="tracking.html">Отслеживание</a></li>
                 </ul>
             </nav>
             <div class="header-icons">
@@ -249,15 +252,197 @@
                         </div>
                     </div>
 
+                    <div class="form-section extras-section">
+                        <h3>Дополните ваш заказ</h3>
+                        <p class="extras-description">Сделайте подарок еще более особенным</p>
+
+                        <!-- Greeting Cards -->
+                        <div class="extras-category">
+                            <h4>📮 Поздравительные открытки</h4>
+                            <div class="extras-grid">
+                                <label class="extra-item">
+                                    <input type="checkbox" name="extra" value="card-romantic" data-price="150" onchange="updateExtras()">
+                                    <div class="extra-content">
+                                        <div class="extra-icon">💝</div>
+                                        <div class="extra-name">Романтическая открытка</div>
+                                        <div class="extra-price">150 ₽</div>
+                                    </div>
+                                </label>
+                                <label class="extra-item">
+                                    <input type="checkbox" name="extra" value="card-birthday" data-price="150" onchange="updateExtras()">
+                                    <div class="extra-content">
+                                        <div class="extra-icon">🎂</div>
+                                        <div class="extra-name">Открытка "С днем рождения"</div>
+                                        <div class="extra-price">150 ₽</div>
+                                    </div>
+                                </label>
+                                <label class="extra-item">
+                                    <input type="checkbox" name="extra" value="card-universal" data-price="120" onchange="updateExtras()">
+                                    <div class="extra-content">
+                                        <div class="extra-icon">✉️</div>
+                                        <div class="extra-name">Универсальная открытка</div>
+                                        <div class="extra-price">120 ₽</div>
+                                    </div>
+                                </label>
+                                <label class="extra-item">
+                                    <input type="checkbox" name="extra" value="card-thank-you" data-price="130" onchange="updateExtras()">
+                                    <div class="extra-content">
+                                        <div class="extra-icon">🙏</div>
+                                        <div class="extra-name">Открытка "Спасибо"</div>
+                                        <div class="extra-price">130 ₽</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Soft Toys -->
+                        <div class="extras-category">
+                            <h4>🧸 Мягкие игрушки</h4>
+                            <div class="extras-grid">
+                                <label class="extra-item">
+                                    <input type="checkbox" name="extra" value="toy-bear" data-price="800" onchange="updateExtras()">
+                                    <div class="extra-content">
+                                        <div class="extra-icon">🧸</div>
+                                        <div class="extra-name">Плюшевый мишка (25см)</div>
+                                        <div class="extra-price">800 ₽</div>
+                                    </div>
+                                </label>
+                                <label class="extra-item">
+                                    <input type="checkbox" name="extra" value="toy-bunny" data-price="750" onchange="updateExtras()">
+                                    <div class="extra-content">
+                                        <div class="extra-icon">🐰</div>
+                                        <div class="extra-name">Зайчик (20см)</div>
+                                        <div class="extra-price">750 ₽</div>
+                                    </div>
+                                </label>
+                                <label class="extra-item">
+                                    <input type="checkbox" name="extra" value="toy-cat" data-price="700" onchange="updateExtras()">
+                                    <div class="extra-content">
+                                        <div class="extra-icon">🐱</div>
+                                        <div class="extra-name">Котенок (18см)</div>
+                                        <div class="extra-price">700 ₽</div>
+                                    </div>
+                                </label>
+                                <label class="extra-item">
+                                    <input type="checkbox" name="extra" value="toy-bear-big" data-price="1500" onchange="updateExtras()">
+                                    <div class="extra-content">
+                                        <div class="extra-icon">🧸</div>
+                                        <div class="extra-name">Большой мишка (50см)</div>
+                                        <div class="extra-price">1 500 ₽</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Balloons -->
+                        <div class="extras-category">
+                            <h4>🎈 Воздушные шары</h4>
+                            <div class="extras-grid">
+                                <label class="extra-item">
+                                    <input type="checkbox" name="extra" value="balloon-heart" data-price="200" onchange="updateExtras()">
+                                    <div class="extra-content">
+                                        <div class="extra-icon">❤️</div>
+                                        <div class="extra-name">Сердце фольгированное</div>
+                                        <div class="extra-price">200 ₽</div>
+                                    </div>
+                                </label>
+                                <label class="extra-item">
+                                    <input type="checkbox" name="extra" value="balloon-star" data-price="180" onchange="updateExtras()">
+                                    <div class="extra-content">
+                                        <div class="extra-icon">⭐</div>
+                                        <div class="extra-name">Звезда фольгированная</div>
+                                        <div class="extra-price">180 ₽</div>
+                                    </div>
+                                </label>
+                                <label class="extra-item">
+                                    <input type="checkbox" name="extra" value="balloon-set" data-price="500" onchange="updateExtras()">
+                                    <div class="extra-content">
+                                        <div class="extra-icon">🎈</div>
+                                        <div class="extra-name">Набор из 5 шаров</div>
+                                        <div class="extra-price">500 ₽</div>
+                                    </div>
+                                </label>
+                                <label class="extra-item">
+                                    <input type="checkbox" name="extra" value="balloon-number" data-price="350" onchange="updateExtras()">
+                                    <div class="extra-content">
+                                        <div class="extra-icon">🔢</div>
+                                        <div class="extra-name">Цифра фольгированная</div>
+                                        <div class="extra-price">350 ₽</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Sweets -->
+                        <div class="extras-category">
+                            <h4>🍫 Сладости</h4>
+                            <div class="extras-grid">
+                                <label class="extra-item">
+                                    <input type="checkbox" name="extra" value="chocolate-box" data-price="600" onchange="updateExtras()">
+                                    <div class="extra-content">
+                                        <div class="extra-icon">🍫</div>
+                                        <div class="extra-name">Коробка конфет премиум</div>
+                                        <div class="extra-price">600 ₽</div>
+                                    </div>
+                                </label>
+                                <label class="extra-item">
+                                    <input type="checkbox" name="extra" value="chocolate-bar" data-price="300" onchange="updateExtras()">
+                                    <div class="extra-content">
+                                        <div class="extra-icon">🍫</div>
+                                        <div class="extra-name">Шоколадная плитка</div>
+                                        <div class="extra-price">300 ₽</div>
+                                    </div>
+                                </label>
+                                <label class="extra-item">
+                                    <input type="checkbox" name="extra" value="macarons" data-price="450" onchange="updateExtras()">
+                                    <div class="extra-content">
+                                        <div class="extra-icon">🧁</div>
+                                        <div class="extra-name">Набор макарон (6 шт)</div>
+                                        <div class="extra-price">450 ₽</div>
+                                    </div>
+                                </label>
+                                <label class="extra-item">
+                                    <input type="checkbox" name="extra" value="cake" data-price="900" onchange="updateExtras()">
+                                    <div class="extra-content">
+                                        <div class="extra-icon">🎂</div>
+                                        <div class="extra-name">Мини-торт</div>
+                                        <div class="extra-price">900 ₽</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section promo-section">
+                        <h3>Промокод или сертификат</h3>
+                        <div class="promo-input-group">
+                            <input type="text" id="promo-code" placeholder="Введите промокод" style="flex: 1;">
+                            <button type="button" class="btn-secondary" onclick="applyPromoCode()">Применить</button>
+                        </div>
+                        <div id="promo-message" class="promo-message"></div>
+                        <div id="promo-info" class="promo-info" style="display: none;">
+                            <span class="promo-badge">✓ Промокод применен</span>
+                            <button type="button" class="btn-link" onclick="removePromoCode()">Удалить</button>
+                        </div>
+                    </div>
+
                     <div class="order-summary">
                         <h3>Итого к оплате</h3>
                         <div class="summary-line">
                             <span>Товары:</span>
                             <span id="summary-items">0 ₽</span>
                         </div>
+                        <div class="summary-line" id="extras-line" style="display: none;">
+                            <span>Дополнения:</span>
+                            <span id="summary-extras">0 ₽</span>
+                        </div>
                         <div class="summary-line">
                             <span>Доставка:</span>
                             <span id="summary-delivery">0 ₽</span>
+                        </div>
+                        <div class="summary-line discount-line" id="discount-line" style="display: none;">
+                            <span>Скидка (<span id="discount-name"></span>):</span>
+                            <span id="discount-amount" class="discount-amount">-0 ₽</span>
                         </div>
                         <div class="summary-line total">
                             <strong>Итого:</strong>
@@ -297,6 +482,25 @@
         </div>
     </div>
 
+    <section class="newsletter-section">
+        <div class="container">
+            <div class="newsletter-container">
+                <h3>📬 Подпишитесь на рассылку</h3>
+                <p>Получайте информацию о новинках, акциях и специальных предложениях</p>
+                <form class="newsletter-form" id="newsletter-form" onsubmit="subscribeNewsletter(event)">
+                    <input type="email" class="newsletter-input" id="newsletter-email" placeholder="Введите ваш email" required>
+                    <button type="submit" class="newsletter-btn">Подписаться</button>
+                </form>
+                <div id="newsletter-message" class="newsletter-message"></div>
+                <div class="newsletter-benefits">
+                    <div class="newsletter-benefit">Эксклюзивные скидки</div>
+                    <div class="newsletter-benefit">Советы по уходу за цветами</div>
+                    <div class="newsletter-benefit">Первыми узнавайте о новинках</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <footer>
         <div class="container">
             <div class="footer-links">
@@ -304,12 +508,15 @@
                 <a href="faq.html">FAQ</a>
                 <a href="blog.html">Блог</a>
                 <a href="delivery.html">Доставка</a>
+                <a href="tracking.html">Отслеживание</a>
+                <a href="certificates.html">Сертификаты</a>
                 <a href="privacy.html">Конфиденциальность</a>
             </div>
             <p>&copy; 2026 Цветочный Рай. Все права защищены.</p>
         </div>
     </footer>
 
+    <script src="theme.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

@@ -657,6 +657,20 @@ let compareList = [];
 // Filtered flowers array
 let filteredFlowers = [...flowers];
 
+// Promo codes database
+const promoCodes = {
+    'WELCOME10': { type: 'percent', value: 10, description: 'Скидка 10% на первый заказ' },
+    'SPRING2026': { type: 'percent', value: 15, description: 'Весенняя скидка 15%' },
+    'LOVE20': { type: 'percent', value: 20, description: 'Скидка 20% на романтические букеты' },
+    'GIFT500': { type: 'fixed', value: 500, description: 'Скидка 500 рублей' },
+    'VIP25': { type: 'percent', value: 25, description: 'VIP скидка 25%' },
+    'BIRTHDAY': { type: 'fixed', value: 300, description: 'Подарок ко дню рождения' },
+    'NEWYEAR': { type: 'percent', value: 30, description: 'Новогодняя скидка 30%' }
+};
+
+// Current applied promo code
+let currentPromoCode = null;
+
 // Initialize the page
 document.addEventListener('DOMContentLoaded', function() {
     renderFlowers();
@@ -1281,19 +1295,132 @@ function toggleAddressField() {
     updateOrderSummary();
 }
 
+// Apply promo code
+function applyPromoCode() {
+    const promoInput = document.getElementById('promo-code');
+    const promoCode = promoInput.value.trim().toUpperCase();
+    const promoMessage = document.getElementById('promo-message');
+    const promoInfo = document.getElementById('promo-info');
+
+    if (!promoCode) {
+        promoMessage.textContent = 'Введите промокод';
+        promoMessage.className = 'promo-message error';
+        promoMessage.style.display = 'block';
+        setTimeout(() => { promoMessage.style.display = 'none'; }, 3000);
+        return;
+    }
+
+    // Check static promo codes
+    let promo = promoCodes[promoCode];
+    let isCertificate = false;
+
+    // If not found in static codes, check custom codes (certificates)
+    if (!promo) {
+        const customCodes = JSON.parse(localStorage.getItem('customPromoCodes') || '{}');
+        promo = customCodes[promoCode];
+        isCertificate = promo && promo.certificate;
+    }
+
+    if (promo) {
+        currentPromoCode = promoCode;
+
+        let message = `✓ ${promo.description}`;
+        if (isCertificate) {
+            // Get certificate balance
+            const certificates = JSON.parse(localStorage.getItem('certificates') || '{}');
+            const cert = certificates[promoCode];
+            if (cert && cert.remainingValue < promo.value) {
+                // Update promo value to remaining balance
+                promo.value = cert.remainingValue;
+                message = `✓ Сертификат применен (остаток: ${cert.remainingValue} ₽)`;
+            }
+        }
+
+        promoMessage.textContent = message;
+        promoMessage.className = 'promo-message success';
+        promoMessage.style.display = 'block';
+
+        promoInfo.style.display = 'flex';
+        promoInput.disabled = true;
+
+        // Store the promo object for later use
+        if (!promoCodes[promoCode]) {
+            promoCodes[promoCode] = promo;
+        }
+
+        updateOrderSummary();
+
+        setTimeout(() => { promoMessage.style.display = 'none'; }, 3000);
+    } else {
+        promoMessage.textContent = '✗ Недействительный промокод или сертификат';
+        promoMessage.className = 'promo-message error';
+        promoMessage.style.display = 'block';
+        setTimeout(() => { promoMessage.style.display = 'none'; }, 3000);
+    }
+}
+
+// Remove promo code
+function removePromoCode() {
+    currentPromoCode = null;
+
+    const promoInput = document.getElementById('promo-code');
+    const promoInfo = document.getElementById('promo-info');
+
+    promoInput.value = '';
+    promoInput.disabled = false;
+    promoInfo.style.display = 'none';
+
+    updateOrderSummary();
+
+    showNotification('Промокод удален');
+}
+
 // Update order summary
 function updateOrderSummary() {
     const itemsTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const extrasTotal = getExtrasTotal();
     const deliveryType = document.getElementById('delivery-type').value;
 
     let deliveryCost = 0;
     if (deliveryType === 'courier') deliveryCost = 300;
     if (deliveryType === 'express') deliveryCost = 600;
 
-    const total = itemsTotal + deliveryCost;
+    // Calculate discount
+    let discountAmount = 0;
+    if (currentPromoCode) {
+        const promo = promoCodes[currentPromoCode];
+        if (promo.type === 'percent') {
+            discountAmount = Math.round((itemsTotal * promo.value) / 100);
+        } else if (promo.type === 'fixed') {
+            discountAmount = Math.min(promo.value, itemsTotal); // Don't exceed item total
+        }
+    }
+
+    const total = itemsTotal + extrasTotal + deliveryCost - discountAmount;
 
     document.getElementById('summary-items').textContent = itemsTotal.toLocaleString('ru-RU') + ' ₽';
+
+    // Show/hide extras line
+    const extrasLine = document.getElementById('extras-line');
+    if (extrasTotal > 0) {
+        extrasLine.style.display = 'flex';
+        document.getElementById('summary-extras').textContent = extrasTotal.toLocaleString('ru-RU') + ' ₽';
+    } else {
+        extrasLine.style.display = 'none';
+    }
+
     document.getElementById('summary-delivery').textContent = deliveryCost.toLocaleString('ru-RU') + ' ₽';
+
+    // Show/hide discount line
+    const discountLine = document.getElementById('discount-line');
+    if (discountAmount > 0) {
+        discountLine.style.display = 'flex';
+        document.getElementById('discount-name').textContent = currentPromoCode;
+        document.getElementById('discount-amount').textContent = '-' + discountAmount.toLocaleString('ru-RU') + ' ₽';
+    } else {
+        discountLine.style.display = 'none';
+    }
+
     document.getElementById('summary-total').textContent = total.toLocaleString('ru-RU') + ' ₽';
 }
 
@@ -1301,42 +1428,184 @@ function updateOrderSummary() {
 function submitOrder(event) {
     event.preventDefault();
 
+    const itemsTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const extrasTotal = getExtrasTotal();
+    const deliveryType = document.getElementById('delivery-type').value;
+
+    let deliveryCost = 0;
+    if (deliveryType === 'courier') deliveryCost = 300;
+    if (deliveryType === 'express') deliveryCost = 600;
+
+    // Calculate discount
+    let discountAmount = 0;
+    if (currentPromoCode) {
+        const promo = promoCodes[currentPromoCode];
+        if (promo.type === 'percent') {
+            discountAmount = Math.round((itemsTotal * promo.value) / 100);
+        } else if (promo.type === 'fixed') {
+            discountAmount = Math.min(promo.value, itemsTotal);
+        }
+    }
+
+    const finalTotal = itemsTotal + extrasTotal + deliveryCost - discountAmount;
+
     const orderData = {
-        customer: {
-            name: document.getElementById('customer-name').value,
-            phone: document.getElementById('customer-phone').value,
-            email: document.getElementById('customer-email').value
-        },
-        delivery: {
-            type: document.getElementById('delivery-type').value,
-            address: document.getElementById('delivery-address').value,
-            date: document.getElementById('delivery-date').value,
-            time: document.getElementById('delivery-time').value
-        },
-        additional: {
-            giftCard: document.getElementById('gift-card').value,
-            comment: document.getElementById('order-comment').value
-        },
-        items: cart,
-        total: calculateTotal()
+        customerName: document.getElementById('customer-name').value,
+        customerPhone: document.getElementById('customer-phone').value,
+        customerEmail: document.getElementById('customer-email').value,
+        deliveryType: deliveryType,
+        deliveryAddress: document.getElementById('delivery-address').value,
+        deliveryDate: document.getElementById('delivery-date').value,
+        deliveryTime: document.getElementById('delivery-time').value,
+        giftCard: document.getElementById('gift-card').value,
+        comment: document.getElementById('order-comment').value,
+        items: cart.map(item => ({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+            image: item.emoji
+        })),
+        extras: selectedExtras,
+        itemsTotal: itemsTotal,
+        extrasTotal: extrasTotal,
+        deliveryCost: deliveryCost,
+        discount: discountAmount,
+        promoCode: currentPromoCode,
+        total: finalTotal
     };
 
-    console.log('Order submitted:', orderData);
+    // Generate order number and save
+    const orderNumber = generateOrderNumber();
+    saveOrder(orderNumber, orderData);
+
+    console.log('Order submitted:', orderNumber, orderData);
 
     // Show success message
     const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
     showNotification('Заказ успешно оформлен!');
 
     setTimeout(() => {
-        alert(`Спасибо за заказ, ${orderData.customer.name}!\n\nТоваров: ${itemCount} шт.\nСумма: ${orderData.total.toLocaleString('ru-RU')} ₽\n\nДоставка: ${orderData.delivery.date} в ${orderData.delivery.time}\n\nМы свяжемся с вами по телефону ${orderData.customer.phone} для подтверждения заказа.`);
+        const message = `Спасибо за заказ, ${orderData.customerName}!\n\n` +
+                       `Номер заказа: ${orderNumber}\n` +
+                       `Товаров: ${itemCount} шт.\n` +
+                       `Сумма: ${finalTotal.toLocaleString('ru-RU')} ₽\n\n` +
+                       `Доставка: ${orderData.deliveryDate} в ${orderData.deliveryTime}\n\n` +
+                       `Мы свяжемся с вами по телефону ${orderData.customerPhone} для подтверждения заказа.\n\n` +
+                       `Вы можете отследить статус заказа на странице "Отслеживание".`;
+
+        alert(message);
+
+        // Ask if user wants to go to tracking page
+        if (confirm('Перейти на страницу отслеживания заказа?')) {
+            window.location.href = `tracking.html?order=${orderNumber}`;
+        }
 
         // Clear cart and close modal
         cart = [];
+        selectedExtras = [];
+        currentPromoCode = null;
         updateCartCount();
         saveToStorage();
         closeCheckoutForm();
         document.getElementById('checkout-form').reset();
+
+        // Reset extras checkboxes
+        document.querySelectorAll('input[name="extra"]:checked').forEach(checkbox => {
+            checkbox.checked = false;
+        });
+
+        // Reset promo code UI
+        const promoInput = document.getElementById('promo-code');
+        if (promoInput) {
+            promoInput.disabled = false;
+            promoInput.value = '';
+        }
+        const promoInfo = document.getElementById('promo-info');
+        if (promoInfo) promoInfo.style.display = 'none';
     }, 500);
+}
+
+// Generate order number
+function generateOrderNumber() {
+    const year = new Date().getFullYear();
+    const random = Math.floor(Math.random() * 900000) + 100000;
+    return `FP-${year}-${random}`;
+}
+
+// Save order to localStorage
+function saveOrder(orderNumber, orderData) {
+    const now = new Date().toISOString();
+
+    const order = {
+        orderNumber: orderNumber,
+        date: now,
+        customerName: orderData.customerName,
+        customerPhone: orderData.customerPhone,
+        customerEmail: orderData.customerEmail,
+        deliveryType: orderData.deliveryType,
+        deliveryAddress: orderData.deliveryAddress,
+        deliveryDate: orderData.deliveryDate,
+        deliveryTime: orderData.deliveryTime,
+        giftCard: orderData.giftCard,
+        comment: orderData.comment,
+        items: orderData.items,
+        itemsTotal: orderData.itemsTotal,
+        deliveryCost: orderData.deliveryCost,
+        discount: orderData.discount,
+        promoCode: orderData.promoCode,
+        total: orderData.total,
+        status: 'received',
+        statusHistory: {
+            'received': now
+        }
+    };
+
+    // Save to localStorage
+    const orders = JSON.parse(localStorage.getItem('orders') || '{}');
+    orders[orderNumber] = order;
+    localStorage.setItem('orders', JSON.stringify(orders));
+
+    // Simulate order status progression
+    simulateOrderProgress(orderNumber);
+}
+
+// Simulate order status progression (for demo purposes)
+function simulateOrderProgress(orderNumber) {
+    // After 2 minutes: processing
+    setTimeout(() => {
+        updateOrderStatus(orderNumber, 'processing');
+    }, 2 * 60 * 1000);
+
+    // After 30 minutes: ready
+    setTimeout(() => {
+        updateOrderStatus(orderNumber, 'ready');
+    }, 30 * 60 * 1000);
+
+    // After 1 hour: shipping
+    setTimeout(() => {
+        updateOrderStatus(orderNumber, 'shipping');
+    }, 60 * 60 * 1000);
+
+    // After 2 hours: delivered
+    setTimeout(() => {
+        updateOrderStatus(orderNumber, 'delivered');
+    }, 120 * 60 * 1000);
+}
+
+// Update order status
+function updateOrderStatus(orderNumber, newStatus) {
+    const orders = JSON.parse(localStorage.getItem('orders') || '{}');
+    const order = orders[orderNumber];
+
+    if (!order) return;
+
+    order.status = newStatus;
+    order.statusHistory = order.statusHistory || {};
+    order.statusHistory[newStatus] = new Date().toISOString();
+
+    orders[orderNumber] = order;
+    localStorage.setItem('orders', JSON.stringify(orders));
 }
 
 // Calculate total with delivery
@@ -1576,4 +1845,110 @@ function toggleZoom() {
         zoomIcon.textContent = '🔍';
         zoomIcon.title = 'Увеличить';
     }
+}
+
+// Extras management
+let selectedExtras = [];
+
+// Update extras when checkboxes change
+function updateExtras() {
+    selectedExtras = [];
+    const checkboxes = document.querySelectorAll('input[name="extra"]:checked');
+
+    checkboxes.forEach(checkbox => {
+        const name = checkbox.parentElement.querySelector('.extra-name').textContent;
+        const price = parseInt(checkbox.dataset.price);
+        const value = checkbox.value;
+
+        selectedExtras.push({
+            id: value,
+            name: name,
+            price: price
+        });
+    });
+
+    updateOrderSummary();
+}
+
+// Calculate extras total
+function getExtrasTotal() {
+    return selectedExtras.reduce((sum, extra) => sum + extra.price, 0);
+}
+
+// Newsletter subscription
+function subscribeNewsletter(event) {
+    event.preventDefault();
+
+    const emailInput = document.getElementById('newsletter-email');
+    const email = emailInput.value.trim();
+    const message = document.getElementById('newsletter-message');
+
+    if (!email) {
+        showNewsletterMessage('Пожалуйста, введите email адрес', 'error');
+        return;
+    }
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        showNewsletterMessage('Пожалуйста, введите корректный email адрес', 'error');
+        return;
+    }
+
+    // Check if already subscribed
+    const subscribers = JSON.parse(localStorage.getItem('newsletter-subscribers') || '[]');
+    const alreadySubscribed = subscribers.some(sub => sub.email.toLowerCase() === email.toLowerCase());
+
+    if (alreadySubscribed) {
+        showNewsletterMessage('Этот email уже подписан на рассылку!', 'error');
+        return;
+    }
+
+    // Add new subscriber
+    const subscriber = {
+        email: email,
+        subscribeDate: new Date().toISOString(),
+        status: 'active',
+        preferences: {
+            promotions: true,
+            newProducts: true,
+            careTips: true
+        }
+    };
+
+    subscribers.push(subscriber);
+    localStorage.setItem('newsletter-subscribers', JSON.stringify(subscribers));
+
+    // Show success message
+    showNewsletterMessage('✓ Спасибо за подписку! Проверьте вашу почту для подтверждения.', 'success');
+
+    // Reset form
+    emailInput.value = '';
+
+    console.log('New subscriber:', subscriber);
+}
+
+// Show newsletter message
+function showNewsletterMessage(text, type) {
+    const message = document.getElementById('newsletter-message');
+    message.textContent = text;
+    message.className = `newsletter-message ${type}`;
+    message.style.display = 'block';
+
+    setTimeout(() => {
+        message.style.display = 'none';
+    }, 5000);
+}
+
+// Get all subscribers (for admin purposes)
+function getNewsletterSubscribers() {
+    return JSON.parse(localStorage.getItem('newsletter-subscribers') || '[]');
+}
+
+// Unsubscribe from newsletter
+function unsubscribeNewsletter(email) {
+    const subscribers = JSON.parse(localStorage.getItem('newsletter-subscribers') || '[]');
+    const filtered = subscribers.filter(sub => sub.email.toLowerCase() !== email.toLowerCase());
+    localStorage.setItem('newsletter-subscribers', JSON.stringify(filtered));
+    return true;
 }
