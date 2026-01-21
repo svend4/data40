@@ -657,6 +657,20 @@ let compareList = [];
 // Filtered flowers array
 let filteredFlowers = [...flowers];
 
+// Promo codes database
+const promoCodes = {
+    'WELCOME10': { type: 'percent', value: 10, description: 'Скидка 10% на первый заказ' },
+    'SPRING2026': { type: 'percent', value: 15, description: 'Весенняя скидка 15%' },
+    'LOVE20': { type: 'percent', value: 20, description: 'Скидка 20% на романтические букеты' },
+    'GIFT500': { type: 'fixed', value: 500, description: 'Скидка 500 рублей' },
+    'VIP25': { type: 'percent', value: 25, description: 'VIP скидка 25%' },
+    'BIRTHDAY': { type: 'fixed', value: 300, description: 'Подарок ко дню рождения' },
+    'NEWYEAR': { type: 'percent', value: 30, description: 'Новогодняя скидка 30%' }
+};
+
+// Current applied promo code
+let currentPromoCode = null;
+
 // Initialize the page
 document.addEventListener('DOMContentLoaded', function() {
     renderFlowers();
@@ -1281,6 +1295,59 @@ function toggleAddressField() {
     updateOrderSummary();
 }
 
+// Apply promo code
+function applyPromoCode() {
+    const promoInput = document.getElementById('promo-code');
+    const promoCode = promoInput.value.trim().toUpperCase();
+    const promoMessage = document.getElementById('promo-message');
+    const promoInfo = document.getElementById('promo-info');
+
+    if (!promoCode) {
+        promoMessage.textContent = 'Введите промокод';
+        promoMessage.className = 'promo-message error';
+        promoMessage.style.display = 'block';
+        setTimeout(() => { promoMessage.style.display = 'none'; }, 3000);
+        return;
+    }
+
+    if (promoCodes[promoCode]) {
+        currentPromoCode = promoCode;
+        const promo = promoCodes[promoCode];
+
+        promoMessage.textContent = `✓ ${promo.description}`;
+        promoMessage.className = 'promo-message success';
+        promoMessage.style.display = 'block';
+
+        promoInfo.style.display = 'flex';
+        promoInput.disabled = true;
+
+        updateOrderSummary();
+
+        setTimeout(() => { promoMessage.style.display = 'none'; }, 3000);
+    } else {
+        promoMessage.textContent = '✗ Недействительный промокод';
+        promoMessage.className = 'promo-message error';
+        promoMessage.style.display = 'block';
+        setTimeout(() => { promoMessage.style.display = 'none'; }, 3000);
+    }
+}
+
+// Remove promo code
+function removePromoCode() {
+    currentPromoCode = null;
+
+    const promoInput = document.getElementById('promo-code');
+    const promoInfo = document.getElementById('promo-info');
+
+    promoInput.value = '';
+    promoInput.disabled = false;
+    promoInfo.style.display = 'none';
+
+    updateOrderSummary();
+
+    showNotification('Промокод удален');
+}
+
 // Update order summary
 function updateOrderSummary() {
     const itemsTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -1290,10 +1357,32 @@ function updateOrderSummary() {
     if (deliveryType === 'courier') deliveryCost = 300;
     if (deliveryType === 'express') deliveryCost = 600;
 
-    const total = itemsTotal + deliveryCost;
+    // Calculate discount
+    let discountAmount = 0;
+    if (currentPromoCode) {
+        const promo = promoCodes[currentPromoCode];
+        if (promo.type === 'percent') {
+            discountAmount = Math.round((itemsTotal * promo.value) / 100);
+        } else if (promo.type === 'fixed') {
+            discountAmount = Math.min(promo.value, itemsTotal); // Don't exceed item total
+        }
+    }
+
+    const total = itemsTotal + deliveryCost - discountAmount;
 
     document.getElementById('summary-items').textContent = itemsTotal.toLocaleString('ru-RU') + ' ₽';
     document.getElementById('summary-delivery').textContent = deliveryCost.toLocaleString('ru-RU') + ' ₽';
+
+    // Show/hide discount line
+    const discountLine = document.getElementById('discount-line');
+    if (discountAmount > 0) {
+        discountLine.style.display = 'flex';
+        document.getElementById('discount-name').textContent = currentPromoCode;
+        document.getElementById('discount-amount').textContent = '-' + discountAmount.toLocaleString('ru-RU') + ' ₽';
+    } else {
+        discountLine.style.display = 'none';
+    }
+
     document.getElementById('summary-total').textContent = total.toLocaleString('ru-RU') + ' ₽';
 }
 

@@ -19,7 +19,8 @@
                     <li><a href="blog.html">Блог</a></li>
                     <li><a href="faq.html">FAQ</a></li>
                     <li><a href="delivery.html">Доставка</a></li>
-                    <li><a href="#about">О нас</a></li>
+                    <li><a href="about.html">О нас</a></li>
+                    <li><a href="contacts.html">Контакты</a></li>
                 </ul>
             </nav>
             <div class="header-icons">
@@ -249,6 +250,19 @@
                         </div>
                     </div>
 
+                    <div class="form-section promo-section">
+                        <h3>Промокод или сертификат</h3>
+                        <div class="promo-input-group">
+                            <input type="text" id="promo-code" placeholder="Введите промокод" style="flex: 1;">
+                            <button type="button" class="btn-secondary" onclick="applyPromoCode()">Применить</button>
+                        </div>
+                        <div id="promo-message" class="promo-message"></div>
+                        <div id="promo-info" class="promo-info" style="display: none;">
+                            <span class="promo-badge">✓ Промокод применен</span>
+                            <button type="button" class="btn-link" onclick="removePromoCode()">Удалить</button>
+                        </div>
+                    </div>
+
                     <div class="order-summary">
                         <h3>Итого к оплате</h3>
                         <div class="summary-line">
@@ -258,6 +272,10 @@
                         <div class="summary-line">
                             <span>Доставка:</span>
                             <span id="summary-delivery">0 ₽</span>
+                        </div>
+                        <div class="summary-line discount-line" id="discount-line" style="display: none;">
+                            <span>Скидка (<span id="discount-name"></span>):</span>
+                            <span id="discount-amount" class="discount-amount">-0 ₽</span>
                         </div>
                         <div class="summary-line total">
                             <strong>Итого:</strong>
