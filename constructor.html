@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Конструктор букетов - Цветочный Рай</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="pages.css">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="constructor.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>🌺 Цветочный Рай</h1>
+                </div>
+                <nav>
+                    <a href="index.html">Главная</a>
+                    <a href="index.html#catalog">Каталог</a>
+                    <a href="constructor.html" class="active">Конструктор</a>
+                    <a href="certificates.html">Сертификаты</a>
+                    <a href="account.html">Кабинет</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="page-content">
+        <section class="constructor-hero">
+            <div class="container">
+                <h1>🎨 Конструктор букетов</h1>
+                <p>Создайте свой уникальный букет</p>
+            </div>
+        </section>
+
+        <section class="constructor-section">
+            <div class="container">
+                <div class="constructor-container">
+                    <!-- Sidebar with selection -->
+                    <aside class="constructor-sidebar">
+                        <div class="step-section active" id="step-flowers">
+                            <h3>1. Выберите цветы</h3>
+                            <div class="flowers-list" id="flowers-list"></div>
+                        </div>
+
+                        <div class="step-section" id="step-packaging">
+                            <h3>2. Упаковка</h3>
+                            <div class="packaging-options" id="packaging-list"></div>
+                        </div>
+
+                        <div class="step-section" id="step-extras">
+                            <h3>3. Дополнения</h3>
+                            <div class="extras-options" id="constructor-extras"></div>
+                        </div>
+                    </aside>
+
+                    <!-- Preview and summary -->
+                    <div class="constructor-main">
+                        <div class="bouquet-preview">
+                            <h2>Ваш букет</h2>
+                            <div class="preview-container" id="preview-container">
+                                <div class="empty-preview">
+                                    <div class="empty-icon">💐</div>
+                                    <p>Начните создание вашего букета</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bouquet-summary">
+                            <h3>Состав букета</h3>
+                            <div id="summary-items" class="summary-items"></div>
+                            
+                            <div class="price-breakdown">
+                                <div class="price-line">
+                                    <span>Цветы:</span>
+                                    <span id="flowers-price">0 ₽</span>
+                                </div>
+                                <div class="price-line">
+                                    <span>Упаковка:</span>
+                                    <span id="packaging-price">0 ₽</span>
+                                </div>
+                                <div class="price-line">
+                                    <span>Дополнения:</span>
+                                    <span id="extras-price">0 ₽</span>
+                                </div>
+                                <div class="price-total">
+                                    <span>Итого:</span>
+                                    <span id="total-price">0 ₽</span>
+                                </div>
+                            </div>
+
+                            <button class="btn-add-to-cart" onclick="addCustomBouquetToCart()">
+                                Добавить в корзину
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Цветочный Рай</h3>
+                    <p>Дарим радость через красоту цветов с 2015 года</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Цветочный Рай. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="theme.js"></script>
+    <script src="auth.js"></script>
+    <script src="script.js"></script>
+    <script src="constructor.js"></script>
+</body>
+</html>
