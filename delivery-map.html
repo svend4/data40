@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Карта доставки - Цветочный Рай</title>
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="theme.css">
+
+    <style>
+        .delivery-map-container {
+            min-height: 100vh;
+            background: var(--bg-secondary);
+            padding: 2rem;
+        }
+
+        .map-header {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .map-header h1 {
+            font-size: 2rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .map-header p {
+            color: var(--text-secondary);
+        }
+
+        .map-content {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+        }
+
+        .map-section {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .map-canvas {
+            width: 100%;
+            height: 600px;
+            background: #f0f0f0;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .zone-circle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .map-marker {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .map-marker:hover {
+            transform: translate(-50%, -50%) scale(1.2);
+        }
+
+        .courier-marker {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .zone-legend {
+            margin-top: 1.5rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            background: var(--bg-alt);
+            border-radius: 8px;
+        }
+
+        .legend-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+        }
+
+        .legend-info {
+            flex: 1;
+        }
+
+        .legend-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .legend-price {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .sidebar-section {
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .address-input-group {
+            margin-bottom: 1rem;
+        }
+
+        .address-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--card-bg);
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .check-delivery-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .check-delivery-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .delivery-result {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: var(--bg-alt);
+            border-radius: 8px;
+            display: none;
+        }
+
+        .delivery-result.show {
+            display: block;
+        }
+
+        .result-success {
+            border-left: 4px solid #28a745;
+        }
+
+        .result-error {
+            border-left: 4px solid #dc3545;
+        }
+
+        .delivery-details {
+            margin-top: 1rem;
+        }
+
+        .delivery-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .delivery-detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: var(--text-secondary);
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .price-highlight {
+            color: #28a745;
+            font-size: 1.2rem;
+        }
+
+        .courier-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .courier-card {
+            padding: 1rem;
+            background: var(--bg-alt);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .courier-card:hover {
+            transform: translateX(5px);
+        }
+
+        .courier-card.busy {
+            opacity: 0.6;
+        }
+
+        .courier-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .courier-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .courier-info {
+            flex: 1;
+        }
+
+        .courier-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .courier-status {
+            font-size: 0.85rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .status-available {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-busy {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .courier-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 968px) {
+            .map-content {
+                grid-template-columns: 1fr;
+            }
+
+            .map-canvas {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="delivery-map-container">
+        <div class="map-header">
+            <h1>🗺️ Карта зон доставки</h1>
+            <p>Узнайте стоимость и время доставки для вашего адреса</p>
+        </div>
+
+        <div class="map-content">
+            <div class="map-section">
+                <div class="map-canvas" id="delivery-map">
+                    <!-- Zones will be rendered here -->
+                </div>
+
+                <div class="zone-legend" id="zone-legend">
+                    <!-- Legend will be rendered here -->
+                </div>
+            </div>
+
+            <div>
+                <div class="map-section sidebar-section">
+                    <h3 class="sidebar-title">📍 Проверить доставку</h3>
+
+                    <div class="address-input-group">
+                        <input
+                            type="text"
+                            id="address-input"
+                            class="address-input"
+                            placeholder="Введите адрес доставки..."
+                        >
+                    </div>
+
+                    <div class="address-input-group">
+                        <input
+                            type="number"
+                            id="order-total-input"
+                            class="address-input"
+                            placeholder="Сумма заказа (₽)"
+                            value="3000"
+                        >
+                    </div>
+
+                    <button class="check-delivery-btn" onclick="checkDeliveryAddress()">
+                        Рассчитать доставку
+                    </button>
+
+                    <div id="delivery-result" class="delivery-result">
+                        <!-- Result will be rendered here -->
+                    </div>
+                </div>
+
+                <div class="map-section sidebar-section">
+                    <h3 class="sidebar-title">🚗 Активные курьеры</h3>
+                    <div id="courier-list" class="courier-list">
+                        <!-- Couriers will be rendered here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="theme.js"></script>
+    <script src="delivery-advanced.js"></script>
+    <script>
+        // Render delivery map
+        function renderDeliveryMap() {
+            const mapCanvas = document.getElementById('delivery-map');
+            const zones = window.DeliveryAPI.getAllZones();
+
+            // Clear existing zones
+            mapCanvas.innerHTML = '';
+
+            // Render zones (simplified 2D representation)
+            zones.forEach((zone, index) => {
+                const zoneElement = document.createElement('div');
+                zoneElement.className = 'zone-circle';
+                zoneElement.style.backgroundColor = zone.color;
+
+                // Position zones concentrically
+                const size = 150 + (index * 100);
+                zoneElement.style.width = size + 'px';
+                zoneElement.style.height = size + 'px';
+                zoneElement.style.left = '50%';
+                zoneElement.style.top = '50%';
+                zoneElement.style.transform = 'translate(-50%, -50%)';
+
+                mapCanvas.appendChild(zoneElement);
+            });
+
+            // Add store marker
+            const storeMarker = document.createElement('div');
+            storeMarker.className = 'map-marker';
+            storeMarker.innerHTML = '🏪';
+            storeMarker.style.left = '50%';
+            storeMarker.style.top = '50%';
+            storeMarker.title = 'Цветочный Рай';
+            mapCanvas.appendChild(storeMarker);
+
+            // Render courier markers
+            renderCourierMarkers();
+        }
+
+        // Render courier markers on map
+        function renderCourierMarkers() {
+            const mapCanvas = document.getElementById('delivery-map');
+            const couriers = window.DeliveryAPI.getCouriers();
+
+            // Remove existing courier markers
+            mapCanvas.querySelectorAll('.courier-marker').forEach(el => el.remove());
+
+            couriers.forEach(courier => {
+                if (courier.location) {
+                    const marker = document.createElement('div');
+                    marker.className = 'map-marker courier-marker';
+                    marker.innerHTML = '🚗';
+                    marker.title = courier.name;
+
+                    // Convert coordinates to canvas position (simplified)
+                    // In real app, use proper map projection
+                    const x = 50 + (Math.random() - 0.5) * 30;
+                    const y = 50 + (Math.random() - 0.5) * 30;
+
+                    marker.style.left = x + '%';
+                    marker.style.top = y + '%';
+
+                    mapCanvas.appendChild(marker);
+                }
+            });
+        }
+
+        // Render zone legend
+        function renderZoneLegend() {
+            const legend = document.getElementById('zone-legend');
+            const zones = window.DeliveryAPI.getAllZones();
+
+            legend.innerHTML = '<h3 style="margin-bottom: 1rem; color: var(--text-primary);">Зоны доставки</h3>';
+
+            zones.forEach(zone => {
+                const item = document.createElement('div');
+                item.className = 'legend-item';
+                item.innerHTML = `
+                    <div class="legend-color" style="background: ${zone.color};"></div>
+                    <div class="legend-info">
+                        <div class="legend-name">${zone.name}</div>
+                        <div class="legend-price">
+                            ${zone.price === 0 ? 'Бесплатно' : zone.price + ' ₽'}
+                            • ${zone.deliveryTime}
+                        </div>
+                        <div class="legend-price" style="font-size: 0.8rem;">
+                            ${zone.description}
+                        </div>
+                    </div>
+                `;
+                legend.appendChild(item);
+            });
+        }
+
+        // Check delivery for address
+        async function checkDeliveryAddress() {
+            const address = document.getElementById('address-input').value.trim();
+            const orderTotal = parseFloat(document.getElementById('order-total-input').value) || 0;
+            const resultDiv = document.getElementById('delivery-result');
+
+            if (!address) {
+                alert('Введите адрес доставки');
+                return;
+            }
+
+            // Show loading
+            resultDiv.innerHTML = '<div style="text-align: center;">⏳ Расчет доставки...</div>';
+            resultDiv.className = 'delivery-result show';
+
+            // Get delivery info
+            const deliveryInfo = await window.DeliveryAPI.getDeliveryInfo(address, orderTotal);
+
+            if (!deliveryInfo.success) {
+                resultDiv.className = 'delivery-result show result-error';
+                resultDiv.innerHTML = `
+                    <div style="font-weight: 600; color: #dc3545; margin-bottom: 0.5rem;">
+                        ❌ ${deliveryInfo.error}
+                    </div>
+                    <p style="margin: 0; color: var(--text-secondary); font-size: 0.9rem;">
+                        Попробуйте изменить адрес или свяжитесь с нами для уточнения.
+                    </p>
+                `;
+                return;
+            }
+
+            // Show success result
+            resultDiv.className = 'delivery-result show result-success';
+
+            const expressOptions = window.DeliveryAPI.getExpressOptions(deliveryInfo.zone.id);
+
+            resultDiv.innerHTML = `
+                <div style="font-weight: 600; color: #28a745; margin-bottom: 1rem;">
+                    ✅ Доставка доступна
+                </div>
+                <div class="delivery-details">
+                    <div class="delivery-detail-row">
+                        <span class="detail-label">Зона:</span>
+                        <span class="detail-value">${deliveryInfo.zone.name}</span>
+                    </div>
+                    <div class="delivery-detail-row">
+                        <span class="detail-label">Расстояние:</span>
+                        <span class="detail-value">${deliveryInfo.zone.distance} км</span>
+                    </div>
+                    <div class="delivery-detail-row">
+                        <span class="detail-label">Время доставки:</span>
+                        <span class="detail-value">${deliveryInfo.cost.deliveryTime}</span>
+                    </div>
+                    <div class="delivery-detail-row">
+                        <span class="detail-label">Стоимость:</span>
+                        <span class="detail-value price-highlight">
+                            ${deliveryInfo.cost.isFree ? 'Бесплатно!' : deliveryInfo.cost.total + ' ₽'}
+                        </span>
+                    </div>
+                    ${!deliveryInfo.cost.isFree && deliveryInfo.cost.minForFree > orderTotal ? `
+                        <div style="margin-top: 1rem; padding: 1rem; background: #fff3cd; border-radius: 8px; font-size: 0.9rem;">
+                            💡 Добавьте товаров на ${deliveryInfo.cost.minForFree - orderTotal} ₽ для бесплатной доставки
+                        </div>
+                    ` : ''}
+                    ${expressOptions.length > 0 ? `
+                        <div style="margin-top: 1rem;">
+                            <div style="font-weight: 600; margin-bottom: 0.5rem;">⚡ Доступны опции экспресс-доставки:</div>
+                            ${expressOptions.map(opt => `
+                                <div style="padding: 0.5rem; background: var(--bg-alt); border-radius: 4px; margin-bottom: 0.5rem; font-size: 0.9rem;">
+                                    ${opt.name}: +${opt.additionalPrice} ₽ (${opt.deliveryTime})
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+
+            // Add marker to map for delivery address
+            addDeliveryMarker(deliveryInfo.coordinates);
+        }
+
+        // Add delivery address marker to map
+        function addDeliveryMarker(coordinates) {
+            const mapCanvas = document.getElementById('delivery-map');
+
+            // Remove existing delivery markers
+            mapCanvas.querySelectorAll('.delivery-address-marker').forEach(el => el.remove());
+
+            const marker = document.createElement('div');
+            marker.className = 'map-marker delivery-address-marker';
+            marker.innerHTML = '📍';
+            marker.title = 'Адрес доставки';
+            marker.style.left = (50 + (Math.random() - 0.5) * 40) + '%';
+            marker.style.top = (50 + (Math.random() - 0.5) * 40) + '%';
+
+            mapCanvas.appendChild(marker);
+        }
+
+        // Render courier list
+        function renderCourierList() {
+            const courierList = document.getElementById('courier-list');
+            const couriers = window.DeliveryAPI.getCouriers();
+
+            if (couriers.length === 0) {
+                courierList.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">Нет активных курьеров</p>';
+                return;
+            }
+
+            courierList.innerHTML = couriers.map(courier => `
+                <div class="courier-card ${courier.status === 'busy' ? 'busy' : ''}" onclick="focusOnCourier('${courier.id}')">
+                    <div class="courier-header">
+                        <div class="courier-avatar">${courier.name.charAt(0)}</div>
+                        <div class="courier-info">
+                            <div class="courier-name">${courier.name}</div>
+                            <span class="courier-status status-${courier.status}">
+                                ${courier.status === 'available' ? '✅ Доступен' : '🚗 Занят'}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="courier-stats">
+                        <span>⭐ ${courier.rating}</span>
+                        <span>📦 ${courier.completedDeliveries} доставок</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Focus on courier
+        function focusOnCourier(courierId) {
+            console.log('[Map] Focusing on courier:', courierId);
+            // In real app, center map on courier location
+            alert('В реальном приложении карта центрируется на курьере');
+        }
+
+        // Initialize map
+        function initializeMap() {
+            renderDeliveryMap();
+            renderZoneLegend();
+            renderCourierList();
+
+            // Update courier positions every 10 seconds
+            setInterval(() => {
+                renderCourierMarkers();
+                renderCourierList();
+            }, 10000);
+
+            console.log('[Map] Delivery map initialized');
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeMap();
+        });
+
+        // Listen for courier location updates
+        document.addEventListener('courierLocationUpdated', (event) => {
+            console.log('[Map] Courier location updated:', event.detail);
+            renderCourierMarkers();
+        });
+    </script>
+</body>
+</html>

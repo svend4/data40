@@ -72,6 +72,14 @@
         <priority>0.3</priority>
     </url>
 
+    <!-- Карта доставки -->
+    <url>
+        <loc>https://flowerparadise.ru/delivery-map.html</loc>
+        <lastmod>2026-01-21</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
     <!-- Отслеживание заказов -->
     <url>
         <loc>https://flowerparadise.ru/tracking.html</loc>
