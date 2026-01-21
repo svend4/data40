@@ -1310,22 +1310,49 @@ function applyPromoCode() {
         return;
     }
 
-    if (promoCodes[promoCode]) {
-        currentPromoCode = promoCode;
-        const promo = promoCodes[promoCode];
+    // Check static promo codes
+    let promo = promoCodes[promoCode];
+    let isCertificate = false;
 
-        promoMessage.textContent = `✓ ${promo.description}`;
+    // If not found in static codes, check custom codes (certificates)
+    if (!promo) {
+        const customCodes = JSON.parse(localStorage.getItem('customPromoCodes') || '{}');
+        promo = customCodes[promoCode];
+        isCertificate = promo && promo.certificate;
+    }
+
+    if (promo) {
+        currentPromoCode = promoCode;
+
+        let message = `✓ ${promo.description}`;
+        if (isCertificate) {
+            // Get certificate balance
+            const certificates = JSON.parse(localStorage.getItem('certificates') || '{}');
+            const cert = certificates[promoCode];
+            if (cert && cert.remainingValue < promo.value) {
+                // Update promo value to remaining balance
+                promo.value = cert.remainingValue;
+                message = `✓ Сертификат применен (остаток: ${cert.remainingValue} ₽)`;
+            }
+        }
+
+        promoMessage.textContent = message;
         promoMessage.className = 'promo-message success';
         promoMessage.style.display = 'block';
 
         promoInfo.style.display = 'flex';
         promoInput.disabled = true;
 
+        // Store the promo object for later use
+        if (!promoCodes[promoCode]) {
+            promoCodes[promoCode] = promo;
+        }
+
         updateOrderSummary();
 
         setTimeout(() => { promoMessage.style.display = 'none'; }, 3000);
     } else {
-        promoMessage.textContent = '✗ Недействительный промокод';
+        promoMessage.textContent = '✗ Недействительный промокод или сертификат';
         promoMessage.className = 'promo-message error';
         promoMessage.style.display = 'block';
         setTimeout(() => { promoMessage.style.display = 'none'; }, 3000);
