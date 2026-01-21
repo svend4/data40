@@ -26,6 +26,9 @@
                 </ul>
             </nav>
             <div class="header-icons">
+                <div class="icon-btn" id="auth-button" title="Личный кабинет">
+                    🔐 Войти
+                </div>
                 <div class="icon-btn" onclick="toggleFavorites()" title="Избранное">
                     ❤️ <span id="favorites-count">0</span>
                 </div>
@@ -516,7 +519,60 @@
         </div>
     </footer>
 
+    <!-- Auth Modal -->
+    <div class="modal" id="auth-modal">
+        <div class="modal-content" style="max-width: 450px;">
+            <div class="modal-header">
+                <h2>Вход в личный кабинет</h2>
+                <span class="close" onclick="closeAuthModal()">&times;</span>
+            </div>
+            <div class="auth-tabs">
+                <button id="login-tab" class="auth-tab active" onclick="switchAuthMode('login')">Вход</button>
+                <button id="register-tab" class="auth-tab" onclick="switchAuthMode('register')">Регистрация</button>
+            </div>
+            <div id="login-form" class="auth-form">
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Пароль</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: 100%;">Войти</button>
+                </form>
+            </div>
+            <div id="register-form" class="auth-form" style="display: none;">
+                <form onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label>Имя</label>
+                        <input type="text" id="register-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="register-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Телефон</label>
+                        <input type="tel" id="register-phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Пароль</label>
+                        <input type="password" id="register-password" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label>Подтвердите пароль</label>
+                        <input type="password" id="register-confirm-password" required minlength="6">
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: 100%;">Зарегистрироваться</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script src="theme.js"></script>
+    <script src="auth.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
