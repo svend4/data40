@@ -30,6 +30,9 @@ function initializeAccountPage() {
     // Load loyalty program
     loadLoyalty();
 
+    // Load referral program
+    loadReferral();
+
     // Load reminders
     loadReminders();
 
@@ -268,6 +271,14 @@ function loadLoyalty() {
     const user = AuthAPI.getCurrentUser();
     if (typeof LoyaltyAPI !== 'undefined') {
         LoyaltyAPI.renderLoyaltyWidget(user.id);
+    }
+}
+
+// Load referral program
+function loadReferral() {
+    const user = AuthAPI.getCurrentUser();
+    if (typeof ReferralAPI !== 'undefined') {
+        ReferralAPI.renderReferralWidget(user.id);
     }
 }
 
