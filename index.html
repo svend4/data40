@@ -63,15 +63,26 @@
                         </select>
                         <select id="type-filter" onchange="filterFlowers()">
                             <option value="all">Все типы</option>
-                            <option value="roses">Розы</option>
-                            <option value="tulips">Тюльпаны</option>
-                            <option value="lilies">Лилии</option>
-                            <option value="sunflowers">Подсолнухи</option>
-                            <option value="gerberas">Герберы</option>
-                            <option value="peonies">Пионы</option>
-                            <option value="chrysanthemums">Хризантемы</option>
-                            <option value="orchids">Орхидеи</option>
-                            <option value="wildflowers">Полевые</option>
+                            <optgroup label="По типу цветов">
+                                <option value="roses">Розы</option>
+                                <option value="tulips">Тюльпаны</option>
+                                <option value="lilies">Лилии</option>
+                                <option value="sunflowers">Подсолнухи</option>
+                                <option value="gerberas">Герберы</option>
+                                <option value="peonies">Пионы</option>
+                                <option value="chrysanthemums">Хризантемы</option>
+                                <option value="orchids">Орхидеи</option>
+                                <option value="wildflowers">Полевые</option>
+                            </optgroup>
+                            <optgroup label="По назначению">
+                                <option value="wedding">Свадебные</option>
+                                <option value="funeral">Траурные</option>
+                                <option value="corporate">Корпоративные</option>
+                            </optgroup>
+                            <optgroup label="Коллекции">
+                                <option value="mixed">Микс композиции</option>
+                                <option value="seasonal">Сезонные</option>
+                            </optgroup>
                         </select>
                         <select id="sort-select" onchange="sortFlowers()">
                             <option value="default">Сортировка</option>
