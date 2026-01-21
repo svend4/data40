@@ -826,6 +826,25 @@ function filterFlowers() {
     renderFlowers(filteredFlowers);
 }
 
+// Render filtered flowers from search
+function renderFilteredFlowers(results) {
+    filteredFlowers = results;
+    renderFlowers(filteredFlowers);
+}
+
+// Filter catalog by type (for category search)
+function filterCatalog(type) {
+    const typeFilter = document.getElementById('type-filter');
+    if (typeFilter) {
+        typeFilter.value = type;
+        filterFlowers();
+    } else {
+        // Direct filter if type selector not available
+        filteredFlowers = flowers.filter(flower => flower.type === type);
+        renderFlowers(filteredFlowers);
+    }
+}
+
 // Sort flowers
 function sortFlowers() {
     const sortValue = document.getElementById('sort-select').value;

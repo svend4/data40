@@ -2177,3 +2177,256 @@ footer {
         padding: 6px 12px;
     }
 }
+
+/* Advanced Search System Styles */
+.search-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+}
+
+.search-input-wrapper {
+    position: relative;
+    display: flex;
+    gap: 8px;
+}
+
+#search-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid var(--border-color);
+    border-radius: 25px;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+#search-input:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+#search-button {
+    padding: 12px 24px;
+    background: var(--accent-primary);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#search-button:hover {
+    background: var(--accent-secondary);
+    transform: translateY(-2px);
+}
+
+/* Search Dropdown */
+.search-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+    max-height: 500px;
+    overflow-y: auto;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: all 0.3s;
+}
+
+.search-dropdown.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+}
+
+.search-dropdown::-webkit-scrollbar {
+    width: 6px;
+}
+
+.search-dropdown::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+.search-section {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.search-section:last-child {
+    border-bottom: none;
+}
+
+.search-section-title {
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.search-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.search-item:hover,
+.search-item.active {
+    background: var(--bg-alt);
+}
+
+.search-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.search-text {
+    flex: 1;
+    color: var(--text-primary);
+    font-size: 15px;
+}
+
+.search-text mark {
+    background: rgba(102, 126, 234, 0.2);
+    color: var(--accent-primary);
+    font-weight: 600;
+    padding: 0 2px;
+    border-radius: 2px;
+}
+
+.search-count {
+    font-size: 13px;
+    color: var(--text-secondary);
+    background: var(--bg-alt);
+    padding: 4px 8px;
+    border-radius: 12px;
+}
+
+/* History item */
+.history-item {
+    position: relative;
+}
+
+.remove-history {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px 8px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.history-item:hover .remove-history {
+    opacity: 1;
+}
+
+.remove-history:hover {
+    color: #dc3545;
+}
+
+/* Category item */
+.category-item .search-text {
+    font-weight: 500;
+}
+
+/* Product item */
+.search-product-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.search-product-name {
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.search-product-meta {
+    display: flex;
+    gap: 12px;
+    font-size: 13px;
+}
+
+.search-price {
+    color: var(--accent-primary);
+    font-weight: 600;
+}
+
+.search-rating {
+    color: var(--text-secondary);
+}
+
+/* No results */
+.search-no-results {
+    text-align: center;
+    padding: 3rem 2rem;
+}
+
+.no-results-icon {
+    font-size: 64px;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.no-results-text {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.no-results-hint {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .search-container {
+        max-width: 100%;
+    }
+
+    .search-input-wrapper {
+        flex-direction: column;
+    }
+
+    #search-input,
+    #search-button {
+        width: 100%;
+    }
+
+    .search-dropdown {
+        max-height: 400px;
+    }
+
+    .search-item {
+        padding: 10px 12px;
+    }
+
+    .search-icon {
+        font-size: 20px;
+    }
+
+    .search-text {
+        font-size: 14px;
+    }
+}
