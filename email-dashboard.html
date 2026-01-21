@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Маркетинг - Цветочный Рай</title>
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="pages.css">
+    
+    <style>
+        .email-dashboard {
+            padding: 2rem 0;
+        }
+
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .email-section {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .email-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .email-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .email-table th {
+            text-align: left;
+            padding: 1rem;
+            background: var(--bg-alt);
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .email-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .email-preview-btn {
+            padding: 0.5rem 1rem;
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .email-status {
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .email-status-sent {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .email-status-queued {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .email-status-failed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .create-campaign-form {
+            display: grid;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--card-bg);
+            color: var(--text-primary);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .email-table {
+                font-size: 0.9rem;
+            }
+
+            .email-table th,
+            .email-table td {
+                padding: 0.75rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <span class="logo-icon">🌸</span>
+                <span class="logo-text">Цветочный Рай</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="index.html#catalog">Каталог</a></li>
+                <li><a href="blog.html">Блог</a></li>
+                <li><a href="email-dashboard.html" class="active">Email Маркетинг</a></li>
+            </ul>
+            <div class="header-icons">
+                <button class="icon-btn theme-toggle" onclick="toggleTheme()" title="Сменить тему">
+                    <span class="theme-icon">🌙</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <section class="email-dashboard">
+        <div class="container">
+            <h1 class="page-title">📧 Email Маркетинг</h1>
+            <p class="page-description">Управление email-кампаниями и рассылками</p>
+
+            <!-- Statistics -->
+            <div class="dashboard-stats" id="email-stats">
+                <!-- Stats will be loaded by JavaScript -->
+            </div>
+
+            <!-- Email Queue -->
+            <div class="email-section">
+                <div class="email-section-header">
+                    <h2>📨 Очередь отправки</h2>
+                    <button class="btn-primary" onclick="processQueueManually()">Обработать очередь</button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="email-table" id="email-queue-table">
+                        <thead>
+                            <tr>
+                                <th>Получатель</th>
+                                <th>Тема</th>
+                                <th>Тип</th>
+                                <th>Статус</th>
+                                <th>Дата</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Queue items will be loaded by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Email Campaigns -->
+            <div class="email-section">
+                <div class="email-section-header">
+                    <h2>📊 История кампаний</h2>
+                    <button class="btn-secondary" onclick="showCreateCampaignForm()">+ Создать кампанию</button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="email-table" id="campaigns-table">
+                        <thead>
+                            <tr>
+                                <th>Тип</th>
+                                <th>Тема</th>
+                                <th>Получателей</th>
+                                <th>Дата отправки</th>
+                                <th>Статус</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Campaigns will be loaded by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Subscribers List -->
+            <div class="email-section">
+                <div class="email-section-header">
+                    <h2>👥 Подписчики</h2>
+                    <button class="btn-secondary" onclick="exportSubscribers()">📥 Экспорт</button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="email-table" id="subscribers-table">
+                        <thead>
+                            <tr>
+                                <th>Email</th>
+                                <th>Имя</th>
+                                <th>Дата подписки</th>
+                                <th>Статус</th>
+                                <th>Источник</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Subscribers will be loaded by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Email Previews -->
+            <div class="email-section">
+                <div class="email-section-header">
+                    <h2>👁️ Последние отправленные письма</h2>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="email-table" id="previews-table">
+                        <thead>
+                            <tr>
+                                <th>Получатель</th>
+                                <th>Тема</th>
+                                <th>Тип</th>
+                                <th>Дата отправки</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Previews will be loaded by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Create Campaign Modal -->
+    <div id="create-campaign-modal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <button class="modal-close" onclick="closeCreateCampaignForm()">✕</button>
+            <h2>Создать email-кампанию</h2>
+            <form class="create-campaign-form" onsubmit="return createNewCampaign(event)">
+                <div class="form-group">
+                    <label>Тип кампании</label>
+                    <select id="campaign-type" required>
+                        <option value="newsletter">Newsletter</option>
+                        <option value="promo">Промо-акция</option>
+                        <option value="announcement">Объявление</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Тема письма</label>
+                    <input type="text" id="campaign-subject" required placeholder="Введите тему письма">
+                </div>
+                <div class="form-group">
+                    <label>Месяц (для newsletter)</label>
+                    <input type="text" id="campaign-month" placeholder="Например: Январь 2026">
+                </div>
+                <div class="form-group">
+                    <label>Отправить</label>
+                    <select id="campaign-recipients">
+                        <option value="all">Всем подписчикам</option>
+                        <option value="active">Только активным пользователям</option>
+                        <option value="inactive">Неактивным пользователям</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%;">Создать и отправить</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>О нас</h3>
+                <p>Цветочный Рай - ваш надежный партнер в мире цветов</p>
+            </div>
+            <div class="footer-section">
+                <h3>Контакты</h3>
+                <p>Email: info@flowerparadise.ru</p>
+                <p>Телефон: +7 (999) 123-45-67</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Цветочный Рай. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="theme.js"></script>
+    <script src="email-templates.js"></script>
+    <script src="email.js"></script>
+
+    <script>
+        // Load dashboard data
+        document.addEventListener('DOMContentLoaded', () => {
+            loadEmailStats();
+            loadEmailQueue();
+            loadCampaigns();
+            loadSubscribers();
+            loadEmailPreviews();
+
+            // Refresh data every 30 seconds
+            setInterval(() => {
+                loadEmailStats();
+                loadEmailQueue();
+            }, 30000);
+        });
+
+        function loadEmailStats() {
+            const stats = window.EmailAPI.getEmailStatistics();
+            document.getElementById('email-stats').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-icon">📧</div>
+                    <div class="stat-value">${stats.totalCampaigns}</div>
+                    <div class="stat-label">Всего кампаний</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-value">${stats.sentEmails}</div>
+                    <div class="stat-label">Отправлено писем</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⏳</div>
+                    <div class="stat-value">${stats.queuedEmails}</div>
+                    <div class="stat-label">В очереди</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-value">${stats.activeSubscribers}</div>
+                    <div class="stat-label">Активных подписчиков</div>
+                </div>
+            `;
+        }
+
+        function loadEmailQueue() {
+            const queue = window.EmailAPI.getQueue();
+            const tbody = document.querySelector('#email-queue-table tbody');
+            
+            if (queue.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-secondary);">Очередь пуста</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = queue.slice(0, 10).map(email => `
+                <tr>
+                    <td>${email.to}</td>
+                    <td>${email.subject}</td>
+                    <td>${email.type}</td>
+                    <td><span class="email-status email-status-${email.status}">${getStatusText(email.status)}</span></td>
+                    <td>${formatDate(email.queuedAt)}</td>
+                    <td><button class="email-preview-btn" onclick="window.EmailAPI.viewEmailPreview('${email.id}')">Просмотр</button></td>
+                </tr>
+            `).join('');
+        }
+
+        function loadCampaigns() {
+            const campaigns = window.EmailAPI.getCampaigns();
+            const tbody = document.querySelector('#campaigns-table tbody');
+            
+            if (campaigns.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem; color: var(--text-secondary);">Нет кампаний</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = campaigns.slice(0, 10).map(campaign => `
+                <tr>
+                    <td>${campaign.type}</td>
+                    <td>${campaign.subject}</td>
+                    <td>${campaign.recipientsCount}</td>
+                    <td>${formatDate(campaign.sentAt)}</td>
+                    <td><span class="email-status email-status-${campaign.status}">${getStatusText(campaign.status)}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        function loadSubscribers() {
+            const subscribers = window.EmailAPI.getSubscribers();
+            const tbody = document.querySelector('#subscribers-table tbody');
+            
+            if (subscribers.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem; color: var(--text-secondary);">Нет подписчиков</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = subscribers.slice(0, 20).map(sub => `
+                <tr>
+                    <td>${sub.email}</td>
+                    <td>${sub.name || '-'}</td>
+                    <td>${formatDate(sub.subscribedAt)}</td>
+                    <td><span class="email-status email-status-${sub.subscribed ? 'sent' : 'failed'}">${sub.subscribed ? 'Активен' : 'Отписан'}</span></td>
+                    <td>${sub.source || 'N/A'}</td>
+                </tr>
+            `).join('');
+        }
+
+        function loadEmailPreviews() {
+            const previews = JSON.parse(localStorage.getItem('emailPreviews') || '[]');
+            const tbody = document.querySelector('#previews-table tbody');
+            
+            if (previews.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem; color: var(--text-secondary);">Нет писем</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = previews.slice(0, 10).map(preview => `
+                <tr>
+                    <td>${preview.to}</td>
+                    <td>${preview.subject}</td>
+                    <td>${preview.type}</td>
+                    <td>${formatDate(preview.sentAt)}</td>
+                    <td><button class="email-preview-btn" onclick="window.EmailAPI.viewEmailPreview('${preview.id}')">Просмотр</button></td>
+                </tr>
+            `).join('');
+        }
+
+        function showCreateCampaignForm() {
+            document.getElementById('create-campaign-modal').classList.add('active');
+        }
+
+        function closeCreateCampaignForm() {
+            document.getElementById('create-campaign-modal').classList.remove('active');
+        }
+
+        function createNewCampaign(event) {
+            event.preventDefault();
+
+            const type = document.getElementById('campaign-type').value;
+            const subject = document.getElementById('campaign-subject').value;
+            const month = document.getElementById('campaign-month').value;
+            const recipients = document.getElementById('campaign-recipients').value;
+
+            // Get subscribers based on selection
+            const allSubscribers = window.EmailAPI.getSubscribers();
+            let recipientsList = allSubscribers.filter(s => s.subscribed);
+
+            // Create newsletter data
+            const newsletterData = {
+                campaignId: 'campaign_' + Date.now(),
+                month: month || 'Январь 2026',
+                articles: [
+                    {
+                        id: 1,
+                        emoji: '🌹',
+                        title: 'Как ухаживать за розами',
+                        excerpt: 'Узнайте секреты длительного сохранения свежести роз'
+                    }
+                ]
+            };
+
+            window.EmailAPI.sendNewsletter(newsletterData, recipientsList);
+
+            showNotification(`Кампания создана! Письма отправлены ${recipientsList.length} получателям.`);
+            closeCreateCampaignForm();
+            
+            // Reload data
+            setTimeout(() => {
+                loadEmailStats();
+                loadCampaigns();
+            }, 1000);
+
+            return false;
+        }
+
+        function processQueueManually() {
+            showNotification('Обработка очереди...');
+            // Process queue is automatically handled by email.js
+            setTimeout(() => {
+                loadEmailStats();
+                loadEmailQueue();
+                showNotification('Очередь обработана!');
+            }, 1000);
+        }
+
+        function exportSubscribers() {
+            const subscribers = window.EmailAPI.getSubscribers();
+            const csv = 'Email,Name,Subscribed At,Status\n' + 
+                subscribers.map(s => `${s.email},${s.name || ''},${formatDate(s.subscribedAt)},${s.subscribed ? 'Active' : 'Unsubscribed'}`).join('\n');
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'subscribers_' + Date.now() + '.csv';
+            a.click();
+            
+            showNotification('Подписчики экспортированы в CSV!');
+        }
+
+        function getStatusText(status) {
+            const statusMap = {
+                'queued': 'В очереди',
+                'sent': 'Отправлено',
+                'failed': 'Ошибка'
+            };
+            return statusMap[status] || status;
+        }
+
+        function formatDate(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleString('ru-RU');
+        }
+    </script>
+</body>
+</html>

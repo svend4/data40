@@ -56,6 +56,14 @@
         <priority>0.8</priority>
     </url>
 
+    <!-- Email Маркетинг -->
+    <url>
+        <loc>https://flowerparadise.ru/email-dashboard.html</loc>
+        <lastmod>2026-01-21</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.5</priority>
+    </url>
+
     <!-- Отслеживание заказов -->
     <url>
         <loc>https://flowerparadise.ru/tracking.html</loc>
