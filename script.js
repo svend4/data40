@@ -772,6 +772,9 @@ function renderFlowers(flowersToRender = filteredFlowers) {
                 </div>
                 <p>${flower.shortDescription}</p>
                 <div class="flower-price">${flower.price.toLocaleString('ru-RU')} ₽</div>
+                <button class="flower-reviews-btn" onclick="event.stopPropagation(); showReviewsModal(${flower.id})">
+                    ⭐ Отзывы (${flower.reviewCount || 0})
+                </button>
                 <div class="card-actions">
                     <button class="btn-details" onclick="showProductDetail(${flower.id})">
                         Подробнее
