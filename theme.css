@@ -1,0 +1,399 @@
+/*
+ * Dark Theme System
+ * CSS variables for light and dark themes
+ */
+
+:root {
+    /* Light Theme Colors */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --bg-alt: #f0f0f0;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --text-muted: #999999;
+    --border-color: #ddd;
+    --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.15);
+
+    /* Accent colors (same in both themes) */
+    --accent-primary: #667eea;
+    --accent-secondary: #764ba2;
+    --accent-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+    /* Status colors */
+    --success: #28a745;
+    --error: #dc3545;
+    --warning: #ffc107;
+    --info: #17a2b8;
+
+    /* Card backgrounds */
+    --card-bg: #ffffff;
+    --card-hover-bg: #f8f9fa;
+
+    /* Input styles */
+    --input-bg: #ffffff;
+    --input-border: #ddd;
+    --input-focus-border: #667eea;
+
+    /* Modal */
+    --modal-bg: #ffffff;
+    --modal-overlay: rgba(0, 0, 0, 0.5);
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --bg-alt: #252525;
+    --text-primary: #e0e0e0;
+    --text-secondary: #b0b0b0;
+    --text-muted: #808080;
+    --border-color: #404040;
+    --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.5);
+
+    /* Card backgrounds */
+    --card-bg: #2d2d2d;
+    --card-hover-bg: #353535;
+
+    /* Input styles */
+    --input-bg: #2d2d2d;
+    --input-border: #404040;
+    --input-focus-border: #667eea;
+
+    /* Modal */
+    --modal-bg: #2d2d2d;
+    --modal-overlay: rgba(0, 0, 0, 0.8);
+}
+
+/* Apply theme to body and main elements */
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Headers */
+header {
+    background-color: var(--bg-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Footer */
+footer {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+/* Cards and containers */
+.flower-card,
+.feature,
+.contact-item,
+.modal-content,
+.cart-items,
+.order-header,
+.order-timeline,
+.order-items,
+.tracking-search,
+.value-card,
+.team-card,
+.achievement-card,
+.stat-card,
+.contact-method,
+.faq-item,
+.blog-card {
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-md);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.flower-card:hover,
+.blog-card:hover,
+.team-card:hover {
+    background-color: var(--card-hover-bg);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Inputs and forms */
+input,
+textarea,
+select {
+    background-color: var(--input-bg);
+    color: var(--text-primary);
+    border-color: var(--input-border);
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--input-focus-border);
+    background-color: var(--input-bg);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--text-muted);
+}
+
+/* Borders */
+.timeline-item,
+.order-item,
+hr {
+    border-color: var(--border-color);
+}
+
+/* Text colors */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary);
+}
+
+p {
+    color: var(--text-secondary);
+}
+
+a {
+    color: var(--text-primary);
+}
+
+/* Secondary backgrounds */
+.about,
+.alt-bg,
+.content-section.alt-bg {
+    background-color: var(--bg-alt);
+}
+
+.catalog {
+    background-color: var(--bg-secondary);
+}
+
+/* Modal overlay */
+.modal {
+    background-color: var(--modal-overlay);
+}
+
+/* Navigation */
+nav a {
+    color: var(--text-primary);
+}
+
+nav a:hover,
+nav a.active {
+    color: var(--accent-primary);
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--accent-gradient);
+    color: white;
+    border: none;
+    cursor: pointer;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    z-index: 1000;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1) rotate(15deg);
+    box-shadow: 0 8px 35px rgba(102, 126, 234, 0.4);
+}
+
+.theme-toggle:active {
+    transform: scale(0.95);
+}
+
+/* Tooltip for theme toggle */
+.theme-toggle::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    right: 70px;
+    background: var(--card-bg);
+    color: var(--text-primary);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    white-space: nowrap;
+    box-shadow: var(--shadow-md);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.theme-toggle:hover::before {
+    opacity: 1;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .theme-toggle {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        bottom: 20px;
+        right: 20px;
+    }
+
+    .theme-toggle::before {
+        display: none;
+    }
+}
+
+/* Smooth transitions for theme switch */
+* {
+    transition-property: background-color, color, border-color, box-shadow;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+}
+
+/* Prevent transition on page load */
+body.no-transition * {
+    transition: none !important;
+}
+
+/* Dark theme specific adjustments */
+[data-theme="dark"] .hero {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+}
+
+[data-theme="dark"] .page-hero {
+    opacity: 0.95;
+}
+
+[data-theme="dark"] .footer-links a {
+    color: var(--text-secondary);
+}
+
+[data-theme="dark"] .footer-links a:hover {
+    color: var(--accent-primary);
+}
+
+/* Gradient backgrounds in dark theme */
+[data-theme="dark"] .flower-image {
+    opacity: 0.9;
+}
+
+/* Form sections in dark theme */
+[data-theme="dark"] .form-section {
+    background-color: var(--bg-alt);
+}
+
+[data-theme="dark"] .promo-section {
+    background-color: var(--bg-alt);
+}
+
+/* Success/Error messages in dark theme */
+[data-theme="dark"] .promo-message.success {
+    background: rgba(40, 167, 69, 0.2);
+    color: #4caf50;
+    border-color: rgba(40, 167, 69, 0.4);
+}
+
+[data-theme="dark"] .promo-message.error {
+    background: rgba(220, 53, 69, 0.2);
+    color: #f44336;
+    border-color: rgba(220, 53, 69, 0.4);
+}
+
+[data-theme="dark"] .form-message.success {
+    background: rgba(40, 167, 69, 0.2);
+    color: #4caf50;
+}
+
+[data-theme="dark"] .error-message {
+    background: rgba(220, 53, 69, 0.2);
+    color: #f44336;
+    border-color: rgba(220, 53, 69, 0.4);
+}
+
+/* Timeline in dark theme */
+[data-theme="dark"] .timeline-item::before {
+    background: #404040;
+}
+
+[data-theme="dark"] .timeline-item.completed::before {
+    background: var(--success);
+}
+
+[data-theme="dark"] .timeline-icon {
+    background: var(--card-bg);
+    border-color: #404040;
+}
+
+/* Button adjustments for dark theme */
+[data-theme="dark"] .btn-secondary {
+    background: var(--bg-alt);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+    background: var(--bg-secondary);
+}
+
+[data-theme="dark"] .btn-track-new {
+    background: var(--card-bg);
+    border-color: var(--accent-primary);
+}
+
+[data-theme="dark"] .btn-track-new:hover {
+    background: var(--accent-primary);
+}
+
+/* Map placeholder in dark theme */
+[data-theme="dark"] .map-placeholder {
+    background-color: var(--bg-alt);
+    border: 2px solid var(--border-color);
+}
+
+/* Gallery in dark theme */
+[data-theme="dark"] .gallery-thumbnails {
+    background: var(--bg-alt);
+}
+
+[data-theme="dark"] .gallery-thumbnail {
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .gallery-thumbnail.active {
+    border-color: var(--accent-primary);
+}
+
+/* Reviews in dark theme */
+[data-theme="dark"] .review-card {
+    background: var(--bg-alt);
+    border-color: var(--border-color);
+}
+
+/* Improve contrast for emoji/icons in dark theme */
+[data-theme="dark"] .flower-image,
+[data-theme="dark"] .feature-icon,
+[data-theme="dark"] .contact-icon,
+[data-theme="dark"] .value-icon,
+[data-theme="dark"] .team-avatar,
+[data-theme="dark"] .achievement-icon {
+    filter: brightness(1.1);
+}
+
+/* Loading animation for theme transition */
+@keyframes themeTransition {
+    0% { opacity: 1; }
+    50% { opacity: 0.8; }
+    100% { opacity: 1; }
+}
+
+body.theme-transitioning {
+    animation: themeTransition 0.3s ease;
+}
