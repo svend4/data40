@@ -397,3 +397,39 @@ body.no-transition * {
 body.theme-transitioning {
     animation: themeTransition 0.3s ease;
 }
+
+/* Extras section in dark theme */
+[data-theme="dark"] .extras-section {
+    background-color: var(--bg-alt);
+}
+
+[data-theme="dark"] .extras-category h4 {
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .extras-description {
+    color: var(--text-secondary);
+}
+
+[data-theme="dark"] .extra-content {
+    background: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .extra-item:hover .extra-content {
+    border-color: var(--accent-primary);
+}
+
+[data-theme="dark"] .extra-item input[type="checkbox"]:checked + .extra-content {
+    border-color: var(--accent-primary);
+    background: rgba(102, 126, 234, 0.15);
+}
+
+[data-theme="dark"] .extra-name {
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .extra-price {
+    color: var(--accent-primary);
+}

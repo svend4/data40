@@ -1351,6 +1351,7 @@ function removePromoCode() {
 // Update order summary
 function updateOrderSummary() {
     const itemsTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const extrasTotal = getExtrasTotal();
     const deliveryType = document.getElementById('delivery-type').value;
 
     let deliveryCost = 0;
@@ -1368,9 +1369,19 @@ function updateOrderSummary() {
         }
     }
 
-    const total = itemsTotal + deliveryCost - discountAmount;
+    const total = itemsTotal + extrasTotal + deliveryCost - discountAmount;
 
     document.getElementById('summary-items').textContent = itemsTotal.toLocaleString('ru-RU') + ' ₽';
+
+    // Show/hide extras line
+    const extrasLine = document.getElementById('extras-line');
+    if (extrasTotal > 0) {
+        extrasLine.style.display = 'flex';
+        document.getElementById('summary-extras').textContent = extrasTotal.toLocaleString('ru-RU') + ' ₽';
+    } else {
+        extrasLine.style.display = 'none';
+    }
+
     document.getElementById('summary-delivery').textContent = deliveryCost.toLocaleString('ru-RU') + ' ₽';
 
     // Show/hide discount line
@@ -1391,6 +1402,7 @@ function submitOrder(event) {
     event.preventDefault();
 
     const itemsTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const extrasTotal = getExtrasTotal();
     const deliveryType = document.getElementById('delivery-type').value;
 
     let deliveryCost = 0;
@@ -1408,7 +1420,7 @@ function submitOrder(event) {
         }
     }
 
-    const finalTotal = itemsTotal + deliveryCost - discountAmount;
+    const finalTotal = itemsTotal + extrasTotal + deliveryCost - discountAmount;
 
     const orderData = {
         customerName: document.getElementById('customer-name').value,
@@ -1427,7 +1439,9 @@ function submitOrder(event) {
             quantity: item.quantity,
             image: item.emoji
         })),
+        extras: selectedExtras,
         itemsTotal: itemsTotal,
+        extrasTotal: extrasTotal,
         deliveryCost: deliveryCost,
         discount: discountAmount,
         promoCode: currentPromoCode,
@@ -1462,11 +1476,17 @@ function submitOrder(event) {
 
         // Clear cart and close modal
         cart = [];
+        selectedExtras = [];
         currentPromoCode = null;
         updateCartCount();
         saveToStorage();
         closeCheckoutForm();
         document.getElementById('checkout-form').reset();
+
+        // Reset extras checkboxes
+        document.querySelectorAll('input[name="extra"]:checked').forEach(checkbox => {
+            checkbox.checked = false;
+        });
 
         // Reset promo code UI
         const promoInput = document.getElementById('promo-code');
@@ -1798,4 +1818,32 @@ function toggleZoom() {
         zoomIcon.textContent = '🔍';
         zoomIcon.title = 'Увеличить';
     }
+}
+
+// Extras management
+let selectedExtras = [];
+
+// Update extras when checkboxes change
+function updateExtras() {
+    selectedExtras = [];
+    const checkboxes = document.querySelectorAll('input[name="extra"]:checked');
+
+    checkboxes.forEach(checkbox => {
+        const name = checkbox.parentElement.querySelector('.extra-name').textContent;
+        const price = parseInt(checkbox.dataset.price);
+        const value = checkbox.value;
+
+        selectedExtras.push({
+            id: value,
+            name: name,
+            price: price
+        });
+    });
+
+    updateOrderSummary();
+}
+
+// Calculate extras total
+function getExtrasTotal() {
+    return selectedExtras.reduce((sum, extra) => sum + extra.price, 0);
 }
