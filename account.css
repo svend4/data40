@@ -1,0 +1,339 @@
+/* Account Page Styles */
+
+.account-page {
+    padding: 2rem 0;
+}
+
+.account-container {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+/* Sidebar */
+.account-sidebar {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+.user-info {
+    text-align: center;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid var(--border-color);
+    margin-bottom: 1.5rem;
+}
+
+.user-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    margin: 0 auto 1rem;
+}
+
+.user-info h3 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-primary);
+}
+
+.user-info p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.account-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.account-nav a {
+    padding: 12px 15px;
+    border-radius: 8px;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.account-nav a:hover {
+    background: var(--bg-alt);
+}
+
+.account-nav a.active {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    color: var(--accent-primary);
+    font-weight: 600;
+}
+
+/* Content Area */
+.account-content {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+    min-height: 500px;
+}
+
+.account-section {
+    display: none;
+}
+
+.account-section.active {
+    display: block;
+    animation: fadeIn 0.3s;
+}
+
+.account-section h2 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+}
+
+/* Profile Form */
+.profile-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.profile-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.profile-form input {
+    width: 100%;
+    max-width: 500px;
+    padding: 12px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.btn-primary {
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+}
+
+/* Orders List */
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.order-card {
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    padding: 1.5rem;
+    transition: all 0.3s;
+}
+
+.order-card:hover {
+    border-color: var(--accent-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 1rem;
+}
+
+.order-number {
+    font-weight: 700;
+    color: var(--accent-primary);
+    font-size: 18px;
+}
+
+.order-status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.order-status.received { background: #e3f2fd; color: #1976d2; }
+.order-status.processing { background: #fff3e0; color: #f57c00; }
+.order-status.ready { background: #f3e5f5; color: #7b1fa2; }
+.order-status.shipping { background: #e8f5e9; color: #388e3c; }
+.order-status.delivered { background: #c8e6c9; color: #2e7d32; }
+
+.order-details {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.order-total {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent-primary);
+    margin-top: 1rem;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-secondary);
+}
+
+.empty-state-icon {
+    font-size: 64px;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+/* Favorites Grid */
+.favorites-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.favorite-item {
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.favorite-item:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-4px);
+}
+
+.remove-favorite {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.2s;
+}
+
+.remove-favorite:hover {
+    background: #ff4444;
+    color: white;
+}
+
+.favorite-emoji {
+    font-size: 48px;
+    margin: 1rem 0;
+}
+
+.favorite-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.favorite-price {
+    color: var(--accent-primary);
+    font-weight: 700;
+}
+
+/* Addresses List */
+.addresses-list {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.address-card {
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+}
+
+.address-info h4 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-primary);
+}
+
+.address-info p {
+    margin: 0;
+    color: var(--text-secondary);
+}
+
+.address-actions button {
+    background: none;
+    border: none;
+    color: var(--accent-primary);
+    cursor: pointer;
+    font-size: 20px;
+    padding: 5px;
+}
+
+.address-actions button:hover {
+    color: #ff4444;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .account-container {
+        grid-template-columns: 1fr;
+    }
+
+    .account-sidebar {
+        position: static;
+    }
+
+    .account-nav {
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 0.25rem;
+    }
+
+    .account-nav a {
+        white-space: nowrap;
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+
+    .favorites-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
