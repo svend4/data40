@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Галерея работ - Цветочный Рай</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="pages.css">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="gallery.css">
+    <link rel="stylesheet" href="live-chat.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>🌺 Цветочный Рай</h1>
+                </div>
+                <nav>
+                    <a href="index.html">Главная</a>
+                    <a href="index.html#catalog">Каталог</a>
+                    <a href="certificates.html">Сертификаты</a>
+                    <a href="gallery.html" class="active">Галерея</a>
+                    <a href="tracking.html">Отслеживание</a>
+                    <a href="account.html">Кабинет</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="page-content gallery-page">
+        <!-- Hero Section -->
+        <section class="gallery-hero">
+            <div class="container">
+                <h1>Наши работы</h1>
+                <p>Вдохновитесь красотой наших букетов</p>
+            </div>
+        </section>
+
+        <!-- Filter Section -->
+        <section class="gallery-filters">
+            <div class="container">
+                <div class="filter-buttons">
+                    <button class="filter-btn active" onclick="filterGallery('all')">Все работы</button>
+                    <button class="filter-btn" onclick="filterGallery('weddings')">Свадьбы</button>
+                    <button class="filter-btn" onclick="filterGallery('events')">Мероприятия</button>
+                    <button class="filter-btn" onclick="filterGallery('bouquets')">Букеты</button>
+                    <button class="filter-btn" onclick="filterGallery('corporate')">Корпоративные</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Grid -->
+        <section class="gallery-section">
+            <div class="container">
+                <div class="gallery-grid" id="gallery-grid">
+                    <!-- Gallery items will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="gallery-stats">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">5000+</div>
+                        <div class="stat-label">Довольных клиентов</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">200+</div>
+                        <div class="stat-label">Свадеб</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">10+</div>
+                        <div class="stat-label">Лет опыта</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Видов цветов</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Цветочный Рай</h3>
+                    <p>Дарим радость через красоту цветов с 2015 года</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Цветочный Рай. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="theme.js"></script>
+    <script src="auth.js"></script>
+    <script src="script.js"></script>
+    <script src="gallery.js"></script>
+    <script src="live-chat.js"></script>
+</body>
+</html>
