@@ -48,6 +48,14 @@
         <priority>0.6</priority>
     </url>
 
+    <!-- Блог о цветах -->
+    <url>
+        <loc>https://flowerparadise.ru/blog.html</loc>
+        <lastmod>2026-01-21</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
     <!-- Отслеживание заказов -->
     <url>
         <loc>https://flowerparadise.ru/tracking.html</loc>
