@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Цветочный Рай - Магазин цветов</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>🌸 Цветочный Рай</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Главная</a></li>
+                    <li><a href="#catalog">Каталог</a></li>
+                    <li><a href="#about">О нас</a></li>
+                    <li><a href="#contact">Контакты</a></li>
+                </ul>
+            </nav>
+            <div class="cart-icon" onclick="toggleCart()">
+                🛒 <span id="cart-count">0</span>
+            </div>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h2>Свежие цветы с доставкой</h2>
+            <p>Создаем букеты с любовью для ваших особых моментов</p>
+            <a href="#catalog" class="btn-primary">Смотреть каталог</a>
+        </div>
+    </section>
+
+    <section id="catalog" class="catalog">
+        <div class="container">
+            <h2>Наш каталог</h2>
+            <div class="flower-grid" id="flower-grid">
+                <!-- Flowers will be added by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="container">
+            <h2>О нас</h2>
+            <p>Мы - команда профессиональных флористов с более чем 10-летним опытом. Наша миссия - дарить радость через красоту цветов. Мы используем только свежие цветы от проверенных поставщиков и создаем уникальные композиции для каждого клиента.</p>
+            <div class="features">
+                <div class="feature">
+                    <span class="feature-icon">🚚</span>
+                    <h3>Быстрая доставка</h3>
+                    <p>Доставим ваш заказ за 2 часа</p>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">🌹</span>
+                    <h3>Свежие цветы</h3>
+                    <p>Гарантия свежести каждого букета</p>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">💐</span>
+                    <h3>Индивидуальный подход</h3>
+                    <p>Создадим букет по вашему желанию</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Контакты</h2>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <h3>📞 Телефон</h3>
+                    <p>+7 (495) 123-45-67</p>
+                </div>
+                <div class="contact-item">
+                    <h3>📧 Email</h3>
+                    <p>info@flower-paradise.ru</p>
+                </div>
+                <div class="contact-item">
+                    <h3>📍 Адрес</h3>
+                    <p>г. Москва, ул. Цветочная, д. 1</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Корзина</h2>
+                <span class="close" onclick="toggleCart()">&times;</span>
+            </div>
+            <div id="cart-items" class="cart-items">
+                <!-- Cart items will be added here -->
+            </div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <strong>Итого: <span id="cart-total">0</span> ₽</strong>
+                </div>
+                <button class="btn-primary" onclick="checkout()">Оформить заказ</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Цветочный Рай. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
