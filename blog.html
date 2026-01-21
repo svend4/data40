@@ -3,138 +3,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Блог о цветах | Цветочный Рай</title>
+
+    <!-- Primary Meta Tags -->
+    <title>Блог о цветах - Советы и статьи | Цветочный Рай</title>
+    <meta name="description" content="Блог о цветах: советы по уходу, идеи букетов, цветочный этикет. Экспертные статьи о выборе, уходе и сохранении свежести цветов.">
+    <meta name="keywords" content="блог о цветах, уход за цветами, советы флориста, цветочный этикет, как ухаживать за букетом">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://flowerparadise.ru/blog.html">
+    <meta property="og:title" content="Блог о цветах - Советы и статьи | Цветочный Рай">
+    <meta property="og:description" content="Блог о цветах: советы по уходу, идеи букетов, цветочный этикет. Экспертные статьи о выборе, уходе и сохранении свежести цветов.">
+    <meta property="og:image" content="https://flowerparadise.ru/images/blog-og.jpg">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/icon-180x180.png">
+
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="pages.css">
     <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="pages.css">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Blog",
+        "name": "Блог Цветочного Рая",
+        "description": "Статьи и советы о цветах, букетах и флористике",
+        "url": "https://flowerparadise.ru/blog.html",
+        "publisher": {
+            "@type": "Organization",
+            "name": "Цветочный Рай",
+            "url": "https://flowerparadise.ru"
+        }
+    }
+    </script>
 </head>
 <body>
+    <!-- Header -->
     <header>
-        <div class="container">
+        <nav>
             <div class="logo">
-                <h1><a href="index.html" style="color: white; text-decoration: none;">🌸 Цветочный Рай</a></h1>
+                <span class="logo-icon">🌸</span>
+                <span class="logo-text">Цветочный Рай</span>
             </div>
-            <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="index.html#catalog">Каталог</a></li>
+                <li><a href="blog.html" class="active">Блог</a></li>
+                <li><a href="about.html">О нас</a></li>
+                <li><a href="contact.html">Контакты</a></li>
+            </ul>
+            <div class="header-icons">
+                <button class="icon-btn theme-toggle" onclick="toggleTheme()" title="Сменить тему">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                <a href="wishlist.html" class="icon-btn" title="Избранное">
+                    <span class="wishlist-icon">❤️</span>
+                    <span class="badge" id="wishlist-badge">0</span>
+                </a>
+                <button class="icon-btn" onclick="toggleCart()" title="Корзина">
+                    <span class="cart-icon">🛒</span>
+                    <span class="badge" id="cart-badge">0</span>
+                </button>
+                <a href="account.html" class="icon-btn" id="account-icon" title="Личный кабинет">
+                    <span class="account-icon">👤</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Blog Hero Section -->
+    <section class="blog-hero">
+        <div class="container">
+            <h1 class="blog-hero-title">🌺 Блог о цветах</h1>
+            <p class="blog-hero-description">
+                Советы по уходу за цветами, идеи для букетов, цветочный этикет и многое другое
+            </p>
+
+            <!-- Blog Search -->
+            <div class="blog-search">
+                <input type="text" id="blog-search-input" placeholder="Поиск статей..." class="blog-search-input">
+                <button class="blog-search-btn" onclick="searchBlogPosts()">🔍 Найти</button>
+            </div>
+
+            <!-- Blog Categories -->
+            <div class="blog-categories">
+                <button class="blog-category-btn active" data-category="all" onclick="filterBlogByCategory('all')">
+                    Все статьи
+                </button>
+                <button class="blog-category-btn" data-category="care" onclick="filterBlogByCategory('care')">
+                    🌿 Уход
+                </button>
+                <button class="blog-category-btn" data-category="ideas" onclick="filterBlogByCategory('ideas')">
+                    💡 Идеи
+                </button>
+                <button class="blog-category-btn" data-category="etiquette" onclick="filterBlogByCategory('etiquette')">
+                    🎭 Этикет
+                </button>
+                <button class="blog-category-btn" data-category="news" onclick="filterBlogByCategory('news')">
+                    📰 Новости
+                </button>
+                <button class="blog-category-btn" data-category="diy" onclick="filterBlogByCategory('diy')">
+                    ✂️ Своими руками
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Posts -->
+    <section class="featured-posts">
+        <div class="container">
+            <h2 class="section-title">⭐ Популярные статьи</h2>
+            <div class="featured-posts-grid" id="featured-posts-grid">
+                <!-- Featured posts will be dynamically loaded -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Posts Grid -->
+    <section class="blog-posts">
+        <div class="container">
+            <div class="blog-header">
+                <h2 class="section-title">📝 Все статьи</h2>
+                <select id="blog-sort-select" class="blog-sort-select" onchange="sortBlogPosts()">
+                    <option value="date-desc">Сначала новые</option>
+                    <option value="date-asc">Сначала старые</option>
+                    <option value="views-desc">Популярные</option>
+                    <option value="comments-desc">Обсуждаемые</option>
+                </select>
+            </div>
+
+            <div class="blog-posts-grid" id="blog-posts-grid">
+                <!-- Blog posts will be dynamically loaded -->
+            </div>
+
+            <!-- Pagination -->
+            <div class="blog-pagination" id="blog-pagination">
+                <!-- Pagination will be dynamically loaded -->
+            </div>
+
+            <!-- No Results -->
+            <div id="blog-no-results" class="blog-no-results" style="display: none;">
+                <div class="no-results-icon">📝</div>
+                <h3>Статьи не найдены</h3>
+                <p>Попробуйте изменить параметры поиска</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Subscription -->
+    <section class="blog-newsletter">
+        <div class="container">
+            <div class="newsletter-card">
+                <h2>📬 Подпишитесь на нашу рассылку</h2>
+                <p>Получайте новые статьи, советы и эксклюзивные предложения прямо на почту</p>
+                <form class="newsletter-form" onsubmit="return subscribeToBlogNewsletter(event)">
+                    <input type="email" placeholder="Ваш email" required class="newsletter-input">
+                    <button type="submit" class="newsletter-btn">Подписаться</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>О нас</h3>
+                <p>Цветочный Рай - ваш надежный партнер в мире цветов</p>
+            </div>
+            <div class="footer-section">
+                <h3>Навигация</h3>
                 <ul>
                     <li><a href="index.html">Главная</a></li>
                     <li><a href="index.html#catalog">Каталог</a></li>
                     <li><a href="blog.html">Блог</a></li>
-                    <li><a href="faq.html">FAQ</a></li>
-                    <li><a href="delivery.html">Доставка</a></li>
+                    <li><a href="about.html">О нас</a></li>
                 </ul>
-            </nav>
-            <div class="header-icons">
-                <div class="icon-btn" onclick="window.location.href='index.html'" title="На главную">
-                    🏠
+            </div>
+            <div class="footer-section">
+                <h3>Контакты</h3>
+                <p>Email: info@flowerparadise.ru</p>
+                <p>Телефон: +7 (999) 123-45-67</p>
+            </div>
+            <div class="footer-section">
+                <h3>Социальные сети</h3>
+                <div class="social-links">
+                    <a href="#" title="Instagram">📷</a>
+                    <a href="#" title="VK">🔵</a>
+                    <a href="#" title="Telegram">✈️</a>
                 </div>
             </div>
         </div>
-    </header>
-
-    <section class="page-hero">
-        <div class="container">
-            <h1>Блог о цветах</h1>
-            <p>Полезные советы по уходу и выбору цветов</p>
-        </div>
-    </section>
-
-    <section class="page-content">
-        <div class="container">
-            <div class="blog-grid">
-                <div class="blog-card">
-                    <div class="blog-image" style="background: linear-gradient(135deg, #e83e8c 0%, #dc143c 100%);">🌹</div>
-                    <div class="blog-content">
-                        <div class="blog-meta">
-                            <span>📅 20 января 2026</span>
-                            <span>👤 Анна Флорист</span>
-                        </div>
-                        <h3 class="blog-title">Как продлить жизнь срезанных роз</h3>
-                        <p class="blog-excerpt">Розы - одни из самых популярных цветов, но они требуют особого ухода. Узнайте секреты, которые помогут вашим розам оставаться свежими до 2 недель...</p>
-                        <a href="#" class="blog-read-more">Читать далее →</a>
-                    </div>
-                </div>
-
-                <div class="blog-card">
-                    <div class="blog-image" style="background: linear-gradient(135deg, #ff6b9d 0%, #ffa07a 100%);">🌷</div>
-                    <div class="blog-content">
-                        <div class="blog-meta">
-                            <span>📅 18 января 2026</span>
-                            <span>👤 Мария Садовод</span>
-                        </div>
-                        <h3 class="blog-title">Выбираем тюльпаны: советы флориста</h3>
-                        <p class="blog-excerpt">Тюльпаны - символ весны и нежности. Как правильно выбрать свежие тюльпаны и на что обратить внимание при покупке...</p>
-                        <a href="#" class="blog-read-more">Читать далее →</a>
-                    </div>
-                </div>
-
-                <div class="blog-card">
-                    <div class="blog-image" style="background: linear-gradient(135deg, #dda0dd 0%, #9370db 100%);">🌺</div>
-                    <div class="blog-content">
-                        <div class="blog-meta">
-                            <span>📅 15 января 2026</span>
-                            <span>👤 Дмитрий Ботаник</span>
-                        </div>
-                        <h3 class="blog-title">Орхидеи: мифы и реальность ухода</h3>
-                        <p class="blog-excerpt">Многие считают орхидеи капризными растениями. Развенчиваем мифы и делимся реальными секретами ухода за этими экзотическими красавицами...</p>
-                        <a href="#" class="blog-read-more">Читать далее →</a>
-                    </div>
-                </div>
-
-                <div class="blog-card">
-                    <div class="blog-image" style="background: linear-gradient(135deg, #ffb6d9 0%, #ff69b4 100%);">🌸</div>
-                    <div class="blog-content">
-                        <div class="blog-meta">
-                            <span>📅 12 января 2026</span>
-                            <span>👤 Екатерина Флорист</span>
-                        </div>
-                        <h3 class="blog-title">Пионы: когда и как покупать</h3>
-                        <p class="blog-excerpt">Пионы доступны только в определенный сезон. Узнайте, когда лучше всего покупать пионы, как их выбирать и сохранять...</p>
-                        <a href="#" class="blog-read-more">Читать далее →</a>
-                    </div>
-                </div>
-
-                <div class="blog-card">
-                    <div class="blog-image" style="background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);">🌻</div>
-                    <div class="blog-content">
-                        <div class="blog-meta">
-                            <span>📅 10 января 2026</span>
-                            <span>👤 Ольга Декоратор</span>
-                        </div>
-                        <h3 class="blog-title">Подсолнухи в интерьере: яркие идеи</h3>
-                        <p class="blog-excerpt">Подсолнухи не только дарят радость, но и прекрасно вписываются в интерьер. Идеи для использования подсолнухов в домашнем декоре...</p>
-                        <a href="#" class="blog-read-more">Читать далее →</a>
-                    </div>
-                </div>
-
-                <div class="blog-card">
-                    <div class="blog-image" style="background: linear-gradient(135deg, #90ee90 0%, #98fb98 100%);">💐</div>
-                    <div class="blog-content">
-                        <div class="blog-meta">
-                            <span>📅 8 января 2026</span>
-                            <span>👤 Иван Флорист</span>
-                        </div>
-                        <h3 class="blog-title">Составляем букет своими руками</h3>
-                        <p class="blog-excerpt">Хотите научиться создавать красивые букеты? Пошаговая инструкция от профессионального флориста для начинающих...</p>
-                        <a href="#" class="blog-read-more">Читать далее →</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <div class="footer-links">
-                <a href="index.html">Главная</a>
-                <a href="faq.html">FAQ</a>
-                <a href="blog.html">Блог</a>
-                <a href="delivery.html">Доставка</a>
-                <a href="privacy.html">Конфиденциальность</a>
-            </div>
+        <div class="footer-bottom">
             <p>&copy; 2026 Цветочный Рай. Все права защищены.</p>
         </div>
     </footer>
 
+    <!-- Scripts -->
+    <script src="script.js"></script>
     <script src="theme.js"></script>
+    <script src="auth.js"></script>
+    <script src="blog.js"></script>
+    <script src="seo.js"></script>
+    <script src="analytics.js"></script>
+
+    <script>
+        // Initialize blog page
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeBlog();
+            updateCartBadge();
+            updateWishlistBadge();
+
+            // Update SEO
+            if (typeof SEOAPI !== 'undefined') {
+                SEOAPI.updateMetaTags({
+                    title: 'Блог о цветах - Советы и статьи',
+                    description: 'Блог о цветах: советы по уходу, идеи букетов, цветочный этикет',
+                    keywords: 'блог о цветах, уход за цветами, советы флориста',
+                    url: window.location.href
+                });
+                SEOAPI.trackPageView('Blog');
+            }
+        });
+    </script>
 </body>
 </html>

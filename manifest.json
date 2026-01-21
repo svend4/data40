@@ -1,0 +1,119 @@
+{
+  "name": "Цветочный Рай - Магазин цветов с доставкой",
+  "short_name": "Цветочный Рай",
+  "description": "Интернет-магазин цветов. Доставка букетов, композиций, подарочных сертификатов. Конструктор букетов. Программа лояльности.",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#667eea",
+  "background_color": "#ffffff",
+  "lang": "ru",
+  "dir": "ltr",
+  "categories": ["shopping", "lifestyle"],
+  "icons": [
+    {
+      "src": "/images/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/images/screenshot1.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "platform": "narrow",
+      "label": "Главная страница"
+    },
+    {
+      "src": "/images/screenshot2.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "platform": "narrow",
+      "label": "Каталог букетов"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Каталог",
+      "short_name": "Каталог",
+      "description": "Просмотр каталога букетов",
+      "url": "/index.html#catalog",
+      "icons": [
+        {
+          "src": "/images/shortcut-catalog.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Корзина",
+      "short_name": "Корзина",
+      "description": "Моя корзина",
+      "url": "/index.html#cart",
+      "icons": [
+        {
+          "src": "/images/shortcut-cart.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Личный кабинет",
+      "short_name": "Кабинет",
+      "description": "Личный кабинет",
+      "url": "/account.html",
+      "icons": [
+        {
+          "src": "/images/shortcut-account.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false
+}
