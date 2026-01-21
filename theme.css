@@ -433,3 +433,27 @@ body.theme-transitioning {
 [data-theme="dark"] .extra-price {
     color: var(--accent-primary);
 }
+
+/* Newsletter in dark theme */
+[data-theme="dark"] .newsletter-section h3,
+[data-theme="dark"] .newsletter-section p,
+[data-theme="dark"] .newsletter-benefit {
+    color: white;
+}
+
+[data-theme="dark"] .newsletter-input {
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+}
+
+[data-theme="dark"] .newsletter-input::placeholder {
+    color: #666;
+}
+
+[data-theme="dark"] .newsletter-btn {
+    background: rgba(255, 255, 255, 0.95);
+}
+
+[data-theme="dark"] .newsletter-btn:hover {
+    background: white;
+}

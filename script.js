@@ -1874,3 +1874,81 @@ function updateExtras() {
 function getExtrasTotal() {
     return selectedExtras.reduce((sum, extra) => sum + extra.price, 0);
 }
+
+// Newsletter subscription
+function subscribeNewsletter(event) {
+    event.preventDefault();
+
+    const emailInput = document.getElementById('newsletter-email');
+    const email = emailInput.value.trim();
+    const message = document.getElementById('newsletter-message');
+
+    if (!email) {
+        showNewsletterMessage('Пожалуйста, введите email адрес', 'error');
+        return;
+    }
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        showNewsletterMessage('Пожалуйста, введите корректный email адрес', 'error');
+        return;
+    }
+
+    // Check if already subscribed
+    const subscribers = JSON.parse(localStorage.getItem('newsletter-subscribers') || '[]');
+    const alreadySubscribed = subscribers.some(sub => sub.email.toLowerCase() === email.toLowerCase());
+
+    if (alreadySubscribed) {
+        showNewsletterMessage('Этот email уже подписан на рассылку!', 'error');
+        return;
+    }
+
+    // Add new subscriber
+    const subscriber = {
+        email: email,
+        subscribeDate: new Date().toISOString(),
+        status: 'active',
+        preferences: {
+            promotions: true,
+            newProducts: true,
+            careTips: true
+        }
+    };
+
+    subscribers.push(subscriber);
+    localStorage.setItem('newsletter-subscribers', JSON.stringify(subscribers));
+
+    // Show success message
+    showNewsletterMessage('✓ Спасибо за подписку! Проверьте вашу почту для подтверждения.', 'success');
+
+    // Reset form
+    emailInput.value = '';
+
+    console.log('New subscriber:', subscriber);
+}
+
+// Show newsletter message
+function showNewsletterMessage(text, type) {
+    const message = document.getElementById('newsletter-message');
+    message.textContent = text;
+    message.className = `newsletter-message ${type}`;
+    message.style.display = 'block';
+
+    setTimeout(() => {
+        message.style.display = 'none';
+    }, 5000);
+}
+
+// Get all subscribers (for admin purposes)
+function getNewsletterSubscribers() {
+    return JSON.parse(localStorage.getItem('newsletter-subscribers') || '[]');
+}
+
+// Unsubscribe from newsletter
+function unsubscribeNewsletter(email) {
+    const subscribers = JSON.parse(localStorage.getItem('newsletter-subscribers') || '[]');
+    const filtered = subscribers.filter(sub => sub.email.toLowerCase() !== email.toLowerCase());
+    localStorage.setItem('newsletter-subscribers', JSON.stringify(filtered));
+    return true;
+}
