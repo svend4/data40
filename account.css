@@ -337,3 +337,242 @@
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+/* Loyalty Program Styles */
+.loyalty-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.loyalty-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.loyalty-tier-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.tier-icon {
+    font-size: 32px;
+}
+
+.loyalty-points {
+    text-align: right;
+}
+
+.points-amount {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.points-label {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.tier-progress {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.progress-label {
+    font-size: 14px;
+    margin-bottom: 0.5rem;
+    opacity: 0.9;
+}
+
+.progress-bar {
+    height: 12px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: white;
+    border-radius: 6px;
+    transition: width 0.5s ease;
+}
+
+.progress-text {
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+.tier-max {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.loyalty-benefits {
+    margin-bottom: 1.5rem;
+}
+
+.loyalty-benefits h4 {
+    margin: 0 0 0.75rem 0;
+    font-size: 16px;
+}
+
+.loyalty-benefits ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.loyalty-benefits li {
+    padding: 0.4rem 0;
+    font-size: 14px;
+    opacity: 0.95;
+}
+
+.loyalty-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.stat {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 1rem;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+}
+
+.stat-label {
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+/* Loyalty History */
+.loyalty-history {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-md);
+}
+
+.loyalty-history h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: var(--bg-alt);
+    border-radius: 8px;
+    border-left: 4px solid transparent;
+}
+
+.history-item.earned {
+    border-left-color: #28a745;
+}
+
+.history-item.used {
+    border-left-color: #dc3545;
+}
+
+.history-info {
+    flex: 1;
+}
+
+.history-description {
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.history-date {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.history-amount {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.history-amount.earned {
+    color: #28a745;
+}
+
+.history-amount.used {
+    color: #dc3545;
+}
+
+.empty-history {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 2rem;
+}
+
+/* Loyalty Notification */
+.loyalty-notification {
+    position: fixed;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    z-index: 10001;
+    transition: top 0.3s ease;
+    font-weight: 600;
+    min-width: 300px;
+    text-align: center;
+}
+
+.loyalty-notification.show {
+    top: 20px;
+}
+
+@media (max-width: 768px) {
+    .loyalty-header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+
+    .loyalty-points {
+        text-align: center;
+    }
+
+    .loyalty-stats {
+        grid-template-columns: 1fr;
+    }
+}
