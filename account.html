@@ -45,6 +45,7 @@
                             <a href="#" onclick="showSection('loyalty'); return false;">🎁 Программа лояльности</a>
                             <a href="#" onclick="showSection('reminders'); return false;">📅 Напоминания</a>
                             <a href="#" onclick="showSection('subscriptions'); return false;">🔄 Подписки</a>
+                            <a href="#" onclick="showSection('wishlists'); return false;">💝 Списки желаний</a>
                             <a href="#" onclick="showSection('favorites'); return false;">❤️ Избранное</a>
                             <a href="#" onclick="showSection('addresses'); return false;">📍 Адреса</a>
                             <a href="#" onclick="AuthAPI.logout(); return false;">🚪 Выйти</a>
@@ -94,6 +95,11 @@
                             <div id="subscriptions-container"></div>
                         </section>
 
+                        <!-- Wishlists Section -->
+                        <section id="wishlists-section" class="account-section">
+                            <div id="wishlists-container"></div>
+                        </section>
+
                         <!-- Favorites Section -->
                         <section id="favorites-section" class="account-section">
                             <h2>Избранное</h2>
@@ -132,6 +138,7 @@
     <script src="loyalty.js"></script>
     <script src="reminders.js"></script>
     <script src="subscriptions.js"></script>
+    <script src="wishlist.js"></script>
     <script src="live-chat.js"></script>
     <script src="account-page.js"></script>
 </body>

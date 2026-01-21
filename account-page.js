@@ -36,6 +36,9 @@ function initializeAccountPage() {
     // Load subscriptions
     loadSubscriptions();
 
+    // Load wishlists
+    loadWishlists();
+
     // Load favorites
     loadFavorites();
 
@@ -281,5 +284,13 @@ function loadSubscriptions() {
     const user = AuthAPI.getCurrentUser();
     if (typeof SubscriptionsAPI !== 'undefined') {
         SubscriptionsAPI.renderSubscriptionsPage(user.id);
+    }
+}
+
+// Load wishlists
+function loadWishlists() {
+    const user = AuthAPI.getCurrentUser();
+    if (typeof WishlistAPI !== 'undefined') {
+        WishlistAPI.renderWishlistsPage(user.id);
     }
 }
