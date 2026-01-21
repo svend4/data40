@@ -33,6 +33,9 @@ function initializeAccountPage() {
     // Load reminders
     loadReminders();
 
+    // Load subscriptions
+    loadSubscriptions();
+
     // Load favorites
     loadFavorites();
 
@@ -270,5 +273,13 @@ function loadReminders() {
     const user = AuthAPI.getCurrentUser();
     if (typeof RemindersAPI !== 'undefined') {
         RemindersAPI.renderRemindersCalendar(user.id);
+    }
+}
+
+// Load subscriptions
+function loadSubscriptions() {
+    const user = AuthAPI.getCurrentUser();
+    if (typeof SubscriptionsAPI !== 'undefined') {
+        SubscriptionsAPI.renderSubscriptionsPage(user.id);
     }
 }

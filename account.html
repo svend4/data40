@@ -43,6 +43,7 @@
                             <a href="#" onclick="showSection('orders'); return false;">📦 Мои заказы</a>
                             <a href="#" onclick="showSection('loyalty'); return false;">🎁 Программа лояльности</a>
                             <a href="#" onclick="showSection('reminders'); return false;">📅 Напоминания</a>
+                            <a href="#" onclick="showSection('subscriptions'); return false;">🔄 Подписки</a>
                             <a href="#" onclick="showSection('favorites'); return false;">❤️ Избранное</a>
                             <a href="#" onclick="showSection('addresses'); return false;">📍 Адреса</a>
                             <a href="#" onclick="AuthAPI.logout(); return false;">🚪 Выйти</a>
@@ -87,6 +88,11 @@
                             <div id="reminders-calendar"></div>
                         </section>
 
+                        <!-- Subscriptions Section -->
+                        <section id="subscriptions-section" class="account-section">
+                            <div id="subscriptions-container"></div>
+                        </section>
+
                         <!-- Favorites Section -->
                         <section id="favorites-section" class="account-section">
                             <h2>Избранное</h2>
@@ -124,6 +130,7 @@
     <script src="script.js"></script>
     <script src="loyalty.js"></script>
     <script src="reminders.js"></script>
+    <script src="subscriptions.js"></script>
     <script src="account-page.js"></script>
 </body>
 </html>
