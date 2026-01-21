@@ -1390,42 +1390,175 @@ function updateOrderSummary() {
 function submitOrder(event) {
     event.preventDefault();
 
+    const itemsTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const deliveryType = document.getElementById('delivery-type').value;
+
+    let deliveryCost = 0;
+    if (deliveryType === 'courier') deliveryCost = 300;
+    if (deliveryType === 'express') deliveryCost = 600;
+
+    // Calculate discount
+    let discountAmount = 0;
+    if (currentPromoCode) {
+        const promo = promoCodes[currentPromoCode];
+        if (promo.type === 'percent') {
+            discountAmount = Math.round((itemsTotal * promo.value) / 100);
+        } else if (promo.type === 'fixed') {
+            discountAmount = Math.min(promo.value, itemsTotal);
+        }
+    }
+
+    const finalTotal = itemsTotal + deliveryCost - discountAmount;
+
     const orderData = {
-        customer: {
-            name: document.getElementById('customer-name').value,
-            phone: document.getElementById('customer-phone').value,
-            email: document.getElementById('customer-email').value
-        },
-        delivery: {
-            type: document.getElementById('delivery-type').value,
-            address: document.getElementById('delivery-address').value,
-            date: document.getElementById('delivery-date').value,
-            time: document.getElementById('delivery-time').value
-        },
-        additional: {
-            giftCard: document.getElementById('gift-card').value,
-            comment: document.getElementById('order-comment').value
-        },
-        items: cart,
-        total: calculateTotal()
+        customerName: document.getElementById('customer-name').value,
+        customerPhone: document.getElementById('customer-phone').value,
+        customerEmail: document.getElementById('customer-email').value,
+        deliveryType: deliveryType,
+        deliveryAddress: document.getElementById('delivery-address').value,
+        deliveryDate: document.getElementById('delivery-date').value,
+        deliveryTime: document.getElementById('delivery-time').value,
+        giftCard: document.getElementById('gift-card').value,
+        comment: document.getElementById('order-comment').value,
+        items: cart.map(item => ({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+            image: item.emoji
+        })),
+        itemsTotal: itemsTotal,
+        deliveryCost: deliveryCost,
+        discount: discountAmount,
+        promoCode: currentPromoCode,
+        total: finalTotal
     };
 
-    console.log('Order submitted:', orderData);
+    // Generate order number and save
+    const orderNumber = generateOrderNumber();
+    saveOrder(orderNumber, orderData);
+
+    console.log('Order submitted:', orderNumber, orderData);
 
     // Show success message
     const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
     showNotification('Заказ успешно оформлен!');
 
     setTimeout(() => {
-        alert(`Спасибо за заказ, ${orderData.customer.name}!\n\nТоваров: ${itemCount} шт.\nСумма: ${orderData.total.toLocaleString('ru-RU')} ₽\n\nДоставка: ${orderData.delivery.date} в ${orderData.delivery.time}\n\nМы свяжемся с вами по телефону ${orderData.customer.phone} для подтверждения заказа.`);
+        const message = `Спасибо за заказ, ${orderData.customerName}!\n\n` +
+                       `Номер заказа: ${orderNumber}\n` +
+                       `Товаров: ${itemCount} шт.\n` +
+                       `Сумма: ${finalTotal.toLocaleString('ru-RU')} ₽\n\n` +
+                       `Доставка: ${orderData.deliveryDate} в ${orderData.deliveryTime}\n\n` +
+                       `Мы свяжемся с вами по телефону ${orderData.customerPhone} для подтверждения заказа.\n\n` +
+                       `Вы можете отследить статус заказа на странице "Отслеживание".`;
+
+        alert(message);
+
+        // Ask if user wants to go to tracking page
+        if (confirm('Перейти на страницу отслеживания заказа?')) {
+            window.location.href = `tracking.html?order=${orderNumber}`;
+        }
 
         // Clear cart and close modal
         cart = [];
+        currentPromoCode = null;
         updateCartCount();
         saveToStorage();
         closeCheckoutForm();
         document.getElementById('checkout-form').reset();
+
+        // Reset promo code UI
+        const promoInput = document.getElementById('promo-code');
+        if (promoInput) {
+            promoInput.disabled = false;
+            promoInput.value = '';
+        }
+        const promoInfo = document.getElementById('promo-info');
+        if (promoInfo) promoInfo.style.display = 'none';
     }, 500);
+}
+
+// Generate order number
+function generateOrderNumber() {
+    const year = new Date().getFullYear();
+    const random = Math.floor(Math.random() * 900000) + 100000;
+    return `FP-${year}-${random}`;
+}
+
+// Save order to localStorage
+function saveOrder(orderNumber, orderData) {
+    const now = new Date().toISOString();
+
+    const order = {
+        orderNumber: orderNumber,
+        date: now,
+        customerName: orderData.customerName,
+        customerPhone: orderData.customerPhone,
+        customerEmail: orderData.customerEmail,
+        deliveryType: orderData.deliveryType,
+        deliveryAddress: orderData.deliveryAddress,
+        deliveryDate: orderData.deliveryDate,
+        deliveryTime: orderData.deliveryTime,
+        giftCard: orderData.giftCard,
+        comment: orderData.comment,
+        items: orderData.items,
+        itemsTotal: orderData.itemsTotal,
+        deliveryCost: orderData.deliveryCost,
+        discount: orderData.discount,
+        promoCode: orderData.promoCode,
+        total: orderData.total,
+        status: 'received',
+        statusHistory: {
+            'received': now
+        }
+    };
+
+    // Save to localStorage
+    const orders = JSON.parse(localStorage.getItem('orders') || '{}');
+    orders[orderNumber] = order;
+    localStorage.setItem('orders', JSON.stringify(orders));
+
+    // Simulate order status progression
+    simulateOrderProgress(orderNumber);
+}
+
+// Simulate order status progression (for demo purposes)
+function simulateOrderProgress(orderNumber) {
+    // After 2 minutes: processing
+    setTimeout(() => {
+        updateOrderStatus(orderNumber, 'processing');
+    }, 2 * 60 * 1000);
+
+    // After 30 minutes: ready
+    setTimeout(() => {
+        updateOrderStatus(orderNumber, 'ready');
+    }, 30 * 60 * 1000);
+
+    // After 1 hour: shipping
+    setTimeout(() => {
+        updateOrderStatus(orderNumber, 'shipping');
+    }, 60 * 60 * 1000);
+
+    // After 2 hours: delivered
+    setTimeout(() => {
+        updateOrderStatus(orderNumber, 'delivered');
+    }, 120 * 60 * 1000);
+}
+
+// Update order status
+function updateOrderStatus(orderNumber, newStatus) {
+    const orders = JSON.parse(localStorage.getItem('orders') || '{}');
+    const order = orders[orderNumber];
+
+    if (!order) return;
+
+    order.status = newStatus;
+    order.statusHistory = order.statusHistory || {};
+    order.statusHistory[newStatus] = new Date().toISOString();
+
+    orders[orderNumber] = order;
+    localStorage.setItem('orders', JSON.stringify(orders));
 }
 
 // Calculate total with delivery
