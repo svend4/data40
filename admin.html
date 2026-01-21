@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель - Цветочный Рай</title>
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="login-page" class="admin-login-container">
+        <div class="admin-login-card">
+            <div class="admin-login-logo">
+                <div class="admin-login-logo-icon">🔐</div>
+                <div class="admin-login-logo-text">Админ-панель</div>
+                <p style="margin-top: 0.5rem; color: #666;">Цветочный Рай</p>
+            </div>
+            
+            <form class="admin-login-form" onsubmit="return handleAdminLogin(event)">
+                <div class="admin-form-group">
+                    <label class="admin-form-label">Логин</label>
+                    <input type="text" id="admin-username" class="admin-form-input" required placeholder="admin">
+                </div>
+                
+                <div class="admin-form-group">
+                    <label class="admin-form-label">Пароль</label>
+                    <input type="password" id="admin-password" class="admin-form-input" required placeholder="••••••••">
+                </div>
+                
+                <button type="submit" class="admin-btn admin-btn-primary" style="width: 100%; padding: 1rem; font-size: 1.1rem;">
+                    Войти
+                </button>
+                
+                <div id="login-error" style="color: #dc3545; text-align: center; margin-top: 1rem; display: none;">
+                    Неверный логин или пароль
+                </div>
+            </form>
+            
+            <div style="margin-top: 2rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; font-size: 0.85rem;">
+                <strong>Demo credentials:</strong><br>
+                Логин: admin<br>
+                Пароль: admin123
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="admin-panel" class="admin-container" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <div class="admin-logo-icon">🌸</div>
+                <div class="admin-logo-text">Админ-панель</div>
+            </div>
+            
+            <nav class="admin-nav">
+                <a class="admin-nav-item active" data-section="dashboard" onclick="showAdminSection('dashboard')">
+                    <span class="admin-nav-icon">📊</span>
+                    <span>Дашборд</span>
+                </a>
+                <a class="admin-nav-item" data-section="orders" onclick="showAdminSection('orders')">
+                    <span class="admin-nav-icon">📦</span>
+                    <span>Заказы</span>
+                </a>
+                <a class="admin-nav-item" data-section="products" onclick="showAdminSection('products')">
+                    <span class="admin-nav-icon">🌹</span>
+                    <span>Товары</span>
+                </a>
+                <a class="admin-nav-item" data-section="users" onclick="showAdminSection('users')">
+                    <span class="admin-nav-icon">👥</span>
+                    <span>Пользователи</span>
+                </a>
+                <a class="admin-nav-item" onclick="window.AdminAPI.adminLogout()">
+                    <span class="admin-nav-icon">🚪</span>
+                    <span>Выход</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Header -->
+            <div class="admin-header">
+                <div>
+                    <h1 class="admin-header-title" id="admin-section-title">Дашборд</h1>
+                </div>
+                <div class="admin-user-info">
+                    <div class="admin-avatar" id="admin-avatar">A</div>
+                    <div>
+                        <div style="font-weight: 600;" id="admin-username-display">Admin</div>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary);">Администратор</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Section -->
+            <div id="section-dashboard" class="admin-section-content">
+                <div class="admin-stats-grid" id="admin-stats-grid"></div>
+
+                <div class="admin-section">
+                    <div class="admin-section-header">
+                        <h2 class="admin-section-title">📦 Последние заказы</h2>
+                        <button class="admin-btn admin-btn-secondary" onclick="showAdminSection('orders')">
+                            Все заказы →
+                        </button>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="admin-table" id="recent-orders-table">
+                            <thead>
+                                <tr>
+                                    <th>Номер заказа</th>
+                                    <th>Клиент</th>
+                                    <th>Дата</th>
+                                    <th>Сумма</th>
+                                    <th>Статус</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders Section -->
+            <div id="section-orders" class="admin-section-content" style="display: none;">
+                <div class="admin-section">
+                    <div class="admin-section-header">
+                        <h2 class="admin-section-title">📦 Управление заказами</h2>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="admin-table" id="orders-table">
+                            <thead>
+                                <tr>
+                                    <th>Номер</th>
+                                    <th>Клиент</th>
+                                    <th>Email</th>
+                                    <th>Дата</th>
+                                    <th>Сумма</th>
+                                    <th>Статус</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Section -->
+            <div id="section-products" class="admin-section-content" style="display: none;">
+                <div class="admin-section">
+                    <div class="admin-section-header">
+                        <h2 class="admin-section-title">🌹 Управление товарами</h2>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="admin-table" id="products-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Название</th>
+                                    <th>Тип</th>
+                                    <th>Цена</th>
+                                    <th>Рейтинг</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Section -->
+            <div id="section-users" class="admin-section-content" style="display: none;">
+                <div class="admin-section">
+                    <div class="admin-section-header">
+                        <h2 class="admin-section-title">👥 Управление пользователями</h2>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="admin-table" id="users-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Email</th>
+                                    <th>Дата регистрации</th>
+                                    <th>Статус</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="theme.js"></script>
+    <script src="admin.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.AdminAPI.isAdminAuthenticated()) {
+                showAdminPanel();
+                loadDashboard();
+            } else {
+                document.getElementById('login-page').style.display = 'flex';
+            }
+        });
+
+        function handleAdminLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('admin-username').value;
+            const password = document.getElementById('admin-password').value;
+            
+            if (window.AdminAPI.adminLogin(username, password)) {
+                showAdminPanel();
+                loadDashboard();
+            } else {
+                document.getElementById('login-error').style.display = 'block';
+            }
+            return false;
+        }
+
+        function showAdminPanel() {
+            document.getElementById('login-page').style.display = 'none';
+            document.getElementById('admin-panel').style.display = 'flex';
+            const admin = window.AdminAPI.getCurrentAdmin();
+            if (admin) {
+                document.getElementById('admin-username-display').textContent = admin.username;
+                document.getElementById('admin-avatar').textContent = admin.username.charAt(0).toUpperCase();
+            }
+        }
+
+        function showAdminSection(section) {
+            document.querySelectorAll('.admin-nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector(`[data-section="${section}"]`).classList.add('active');
+            
+            document.querySelectorAll('.admin-section-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            
+            document.getElementById(`section-${section}`).style.display = 'block';
+            
+            const titles = {
+                'dashboard': 'Дашборд',
+                'orders': 'Управление заказами',
+                'products': 'Управление товарами',
+                'users': 'Управление пользователями'
+            };
+            document.getElementById('admin-section-title').textContent = titles[section];
+            
+            switch(section) {
+                case 'dashboard': loadDashboard(); break;
+                case 'orders': loadOrders(); break;
+                case 'products': loadProducts(); break;
+                case 'users': loadUsers(); break;
+            }
+        }
+
+        function loadDashboard() {
+            const stats = window.AdminAPI.getDashboardStats();
+            document.getElementById('admin-stats-grid').innerHTML = `
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon">📦</div>
+                    <div class="admin-stat-value">${stats.totalOrders}</div>
+                    <div class="admin-stat-label">Всего заказов</div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon">💰</div>
+                    <div class="admin-stat-value">${stats.totalRevenue} ₽</div>
+                    <div class="admin-stat-label">Общая выручка</div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon">👥</div>
+                    <div class="admin-stat-value">${stats.totalUsers}</div>
+                    <div class="admin-stat-label">Пользователей</div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon">🌹</div>
+                    <div class="admin-stat-value">${stats.totalProducts}</div>
+                    <div class="admin-stat-label">Товаров</div>
+                </div>
+            `;
+            
+            const recentOrders = window.AdminAPI.getRecentOrders(5);
+            const tbody = document.querySelector('#recent-orders-table tbody');
+            
+            if (recentOrders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem;">Нет заказов</td></tr>';
+            } else {
+                tbody.innerHTML = recentOrders.map(order => `
+                    <tr>
+                        <td><strong>${order.orderNumber}</strong></td>
+                        <td>${order.customerName}</td>
+                        <td>${new Date(order.date).toLocaleDateString('ru-RU')}</td>
+                        <td><strong>${order.total} ₽</strong></td>
+                        <td><span class="admin-badge admin-badge-info">${order.status}</span></td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        function loadOrders() {
+            const orders = window.AdminAPI.getOrders();
+            const tbody = document.querySelector('#orders-table tbody');
+            
+            if (orders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem;">Нет заказов</td></tr>';
+            } else {
+                tbody.innerHTML = orders.map(order => `
+                    <tr>
+                        <td><strong>${order.orderNumber}</strong></td>
+                        <td>${order.customerName}</td>
+                        <td>${order.email}</td>
+                        <td>${new Date(order.date).toLocaleDateString('ru-RU')}</td>
+                        <td><strong>${order.total} ₽</strong></td>
+                        <td><span class="admin-badge admin-badge-info">${order.status}</span></td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        function loadProducts() {
+            const products = window.AdminAPI.getProducts();
+            const tbody = document.querySelector('#products-table tbody');
+            
+            if (products.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem;">Нет товаров</td></tr>';
+            } else {
+                tbody.innerHTML = products.map(product => `
+                    <tr>
+                        <td>${product.id}</td>
+                        <td>${product.emoji} ${product.name}</td>
+                        <td>${product.type}</td>
+                        <td><strong>${product.price} ₽</strong></td>
+                        <td>⭐ ${product.rating || 0}</td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        function loadUsers() {
+            const users = window.AdminAPI.getUsers();
+            const tbody = document.querySelector('#users-table tbody');
+            
+            if (users.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 2rem;">Нет пользователей</td></tr>';
+            } else {
+                tbody.innerHTML = users.map(user => `
+                    <tr>
+                        <td>${user.id}</td>
+                        <td>${user.email}</td>
+                        <td>${new Date(user.registeredAt || Date.now()).toLocaleDateString('ru-RU')}</td>
+                        <td><span class="admin-badge admin-badge-success">Активен</span></td>
+                    </tr>
+                `).join('');
+            }
+        }
+    </script>
+</body>
+</html>

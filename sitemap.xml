@@ -64,6 +64,14 @@
         <priority>0.5</priority>
     </url>
 
+    <!-- Админ-панель -->
+    <url>
+        <loc>https://flowerparadise.ru/admin.html</loc>
+        <lastmod>2026-01-21</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.3</priority>
+    </url>
+
     <!-- Отслеживание заказов -->
     <url>
         <loc>https://flowerparadise.ru/tracking.html</loc>
