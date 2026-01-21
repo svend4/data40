@@ -20,8 +20,16 @@
                     <li><a href="#contact">Контакты</a></li>
                 </ul>
             </nav>
-            <div class="cart-icon" onclick="toggleCart()">
-                🛒 <span id="cart-count">0</span>
+            <div class="header-icons">
+                <div class="icon-btn" onclick="toggleFavorites()" title="Избранное">
+                    ❤️ <span id="favorites-count">0</span>
+                </div>
+                <div class="icon-btn" onclick="toggleComparison()" title="Сравнение">
+                    ⚖️ <span id="compare-count">0</span>
+                </div>
+                <div class="icon-btn" onclick="toggleCart()" title="Корзина">
+                    🛒 <span id="cart-count">0</span>
+                </div>
             </div>
         </div>
     </header>
@@ -43,26 +51,36 @@
                 <div class="search-box">
                     <input type="text" id="search-input" placeholder="🔍 Поиск по названию..." onkeyup="filterFlowers()">
                 </div>
-                <div class="filters">
-                    <select id="price-filter" onchange="filterFlowers()">
-                        <option value="all">Все цены</option>
-                        <option value="0-2000">До 2000 ₽</option>
-                        <option value="2000-3000">2000-3000 ₽</option>
-                        <option value="3000-5000">От 3000 ₽</option>
-                    </select>
-                    <select id="type-filter" onchange="filterFlowers()">
-                        <option value="all">Все типы</option>
-                        <option value="roses">Розы</option>
-                        <option value="tulips">Тюльпаны</option>
-                        <option value="lilies">Лилии</option>
-                        <option value="sunflowers">Подсолнухи</option>
-                        <option value="gerberas">Герберы</option>
-                        <option value="peonies">Пионы</option>
-                        <option value="chrysanthemums">Хризантемы</option>
-                        <option value="orchids">Орхидеи</option>
-                        <option value="wildflowers">Полевые</option>
-                    </select>
-                    <button class="btn-reset" onclick="resetFilters()">Сбросить</button>
+                <div class="filters-row">
+                    <div class="filters">
+                        <select id="price-filter" onchange="filterFlowers()">
+                            <option value="all">Все цены</option>
+                            <option value="0-2000">До 2000 ₽</option>
+                            <option value="2000-3000">2000-3000 ₽</option>
+                            <option value="3000-5000">От 3000 ₽</option>
+                        </select>
+                        <select id="type-filter" onchange="filterFlowers()">
+                            <option value="all">Все типы</option>
+                            <option value="roses">Розы</option>
+                            <option value="tulips">Тюльпаны</option>
+                            <option value="lilies">Лилии</option>
+                            <option value="sunflowers">Подсолнухи</option>
+                            <option value="gerberas">Герберы</option>
+                            <option value="peonies">Пионы</option>
+                            <option value="chrysanthemums">Хризантемы</option>
+                            <option value="orchids">Орхидеи</option>
+                            <option value="wildflowers">Полевые</option>
+                        </select>
+                        <select id="sort-select" onchange="sortFlowers()">
+                            <option value="default">Сортировка</option>
+                            <option value="price-asc">Цена: по возрастанию</option>
+                            <option value="price-desc">Цена: по убыванию</option>
+                            <option value="name-asc">Название: А-Я</option>
+                            <option value="name-desc">Название: Я-А</option>
+                            <option value="rating">По рейтингу</option>
+                        </select>
+                        <button class="btn-reset" onclick="resetFilters()">Сбросить</button>
+                    </div>
                 </div>
             </div>
 
@@ -236,6 +254,32 @@
 
                     <button type="submit" class="btn-primary btn-full">Подтвердить заказ</button>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Favorites Modal -->
+    <div id="favorites-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Избранное</h2>
+                <span class="close" onclick="toggleFavorites()">&times;</span>
+            </div>
+            <div id="favorites-items" class="favorites-items">
+                <!-- Favorites items will be added here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Comparison Modal -->
+    <div id="comparison-modal" class="modal">
+        <div class="modal-content modal-comparison">
+            <div class="modal-header">
+                <h2>Сравнение товаров</h2>
+                <span class="close" onclick="toggleComparison()">&times;</span>
+            </div>
+            <div id="comparison-table-container" class="comparison-container">
+                <!-- Comparison table will be added here -->
             </div>
         </div>
     </div>
