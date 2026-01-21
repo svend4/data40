@@ -27,6 +27,21 @@ function initializeAccountPage() {
     // Load orders
     loadOrders();
 
+    // Load loyalty program
+    loadLoyalty();
+
+    // Load referral program
+    loadReferral();
+
+    // Load reminders
+    loadReminders();
+
+    // Load subscriptions
+    loadSubscriptions();
+
+    // Load wishlists
+    loadWishlists();
+
     // Load favorites
     loadFavorites();
 
@@ -249,4 +264,44 @@ function getStatusText(status) {
         'delivered': 'Доставлен'
     };
     return statusMap[status] || status;
+}
+
+// Load loyalty program
+function loadLoyalty() {
+    const user = AuthAPI.getCurrentUser();
+    if (typeof LoyaltyAPI !== 'undefined') {
+        LoyaltyAPI.renderLoyaltyWidget(user.id);
+    }
+}
+
+// Load referral program
+function loadReferral() {
+    const user = AuthAPI.getCurrentUser();
+    if (typeof ReferralAPI !== 'undefined') {
+        ReferralAPI.renderReferralWidget(user.id);
+    }
+}
+
+// Load reminders calendar
+function loadReminders() {
+    const user = AuthAPI.getCurrentUser();
+    if (typeof RemindersAPI !== 'undefined') {
+        RemindersAPI.renderRemindersCalendar(user.id);
+    }
+}
+
+// Load subscriptions
+function loadSubscriptions() {
+    const user = AuthAPI.getCurrentUser();
+    if (typeof SubscriptionsAPI !== 'undefined') {
+        SubscriptionsAPI.renderSubscriptionsPage(user.id);
+    }
+}
+
+// Load wishlists
+function loadWishlists() {
+    const user = AuthAPI.getCurrentUser();
+    if (typeof WishlistAPI !== 'undefined') {
+        WishlistAPI.renderWishlistsPage(user.id);
+    }
 }

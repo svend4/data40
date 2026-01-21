@@ -772,6 +772,9 @@ function renderFlowers(flowersToRender = filteredFlowers) {
                 </div>
                 <p>${flower.shortDescription}</p>
                 <div class="flower-price">${flower.price.toLocaleString('ru-RU')} ₽</div>
+                <button class="flower-reviews-btn" onclick="event.stopPropagation(); showReviewsModal(${flower.id})">
+                    ⭐ Отзывы (${flower.reviewCount || 0})
+                </button>
                 <div class="card-actions">
                     <button class="btn-details" onclick="showProductDetail(${flower.id})">
                         Подробнее
@@ -1480,6 +1483,12 @@ function submitOrder(event) {
     saveOrder(orderNumber, orderData);
 
     console.log('Order submitted:', orderNumber, orderData);
+
+    // Award loyalty points if user is logged in
+    if (typeof AuthAPI !== 'undefined' && AuthAPI.isLoggedIn() && typeof LoyaltyAPI !== 'undefined') {
+        const user = AuthAPI.getCurrentUser();
+        LoyaltyAPI.addPointsForPurchase(user.id, finalTotal);
+    }
 
     // Show success message
     const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);

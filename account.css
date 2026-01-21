@@ -337,3 +337,1461 @@
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+/* Loyalty Program Styles */
+.loyalty-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.loyalty-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.loyalty-tier-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.tier-icon {
+    font-size: 32px;
+}
+
+.loyalty-points {
+    text-align: right;
+}
+
+.points-amount {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.points-label {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.tier-progress {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.progress-label {
+    font-size: 14px;
+    margin-bottom: 0.5rem;
+    opacity: 0.9;
+}
+
+.progress-bar {
+    height: 12px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: white;
+    border-radius: 6px;
+    transition: width 0.5s ease;
+}
+
+.progress-text {
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+.tier-max {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.loyalty-benefits {
+    margin-bottom: 1.5rem;
+}
+
+.loyalty-benefits h4 {
+    margin: 0 0 0.75rem 0;
+    font-size: 16px;
+}
+
+.loyalty-benefits ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.loyalty-benefits li {
+    padding: 0.4rem 0;
+    font-size: 14px;
+    opacity: 0.95;
+}
+
+.loyalty-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.stat {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 1rem;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+}
+
+.stat-label {
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+/* Loyalty History */
+.loyalty-history {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-md);
+}
+
+.loyalty-history h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: var(--bg-alt);
+    border-radius: 8px;
+    border-left: 4px solid transparent;
+}
+
+.history-item.earned {
+    border-left-color: #28a745;
+}
+
+.history-item.used {
+    border-left-color: #dc3545;
+}
+
+.history-info {
+    flex: 1;
+}
+
+.history-description {
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.history-date {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.history-amount {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.history-amount.earned {
+    color: #28a745;
+}
+
+.history-amount.used {
+    color: #dc3545;
+}
+
+.empty-history {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 2rem;
+}
+
+/* Loyalty Notification */
+.loyalty-notification {
+    position: fixed;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    z-index: 10001;
+    transition: top 0.3s ease;
+    font-weight: 600;
+    min-width: 300px;
+    text-align: center;
+}
+
+.loyalty-notification.show {
+    top: 20px;
+}
+
+@media (max-width: 768px) {
+    .loyalty-header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+
+    .loyalty-points {
+        text-align: center;
+    }
+
+    .loyalty-stats {
+        grid-template-columns: 1fr;
+    }
+}
+/* Reminders Calendar Styles */
+.reminders-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.reminders-header h2 {
+    margin: 0;
+    color: var(--text-primary);
+}
+
+.reminders-content {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 2rem;
+}
+
+/* Upcoming Reminders */
+.upcoming-reminders {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-md);
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+.upcoming-reminders h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    font-size: 18px;
+}
+
+.upcoming-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.upcoming-reminder {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--bg-alt);
+    border-radius: 10px;
+    border-left: 4px solid transparent;
+    transition: all 0.3s;
+}
+
+.upcoming-reminder:hover {
+    transform: translateX(4px);
+}
+
+.upcoming-reminder.urgent {
+    border-left-color: #dc3545;
+    background: rgba(220, 53, 69, 0.1);
+}
+
+.upcoming-reminder.soon {
+    border-left-color: #ffc107;
+    background: rgba(255, 193, 7, 0.1);
+}
+
+.reminder-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.reminder-info {
+    flex: 1;
+}
+
+.reminder-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.reminder-date {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.reminder-recipient {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+.reminder-countdown {
+    font-weight: 700;
+    font-size: 14px;
+    padding: 6px 12px;
+    background: var(--card-bg);
+    border-radius: 20px;
+    white-space: nowrap;
+}
+
+.reminder-countdown.urgent {
+    background: #dc3545;
+    color: white;
+}
+
+.reminder-countdown.soon {
+    background: #ffc107;
+    color: #000;
+}
+
+/* All Reminders */
+.all-reminders {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-md);
+}
+
+.all-reminders h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    font-size: 18px;
+}
+
+.reminders-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.reminder-card {
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+
+.reminder-card:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.reminder-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: var(--bg-alt);
+}
+
+.reminder-category {
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.reminder-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.reminder-actions button {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.reminder-actions button:hover {
+    opacity: 1;
+}
+
+.reminder-card-body {
+    padding: 1rem;
+}
+
+.reminder-card-body h4 {
+    margin: 0 0 0.75rem 0;
+    color: var(--text-primary);
+}
+
+.reminder-card-body p {
+    margin: 0.5rem 0;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.reminder-card-body p.recipient {
+    font-weight: 500;
+    color: var(--accent-primary);
+}
+
+.reminder-card-body p.notes {
+    font-style: italic;
+    border-top: 1px solid var(--border-color);
+    padding-top: 0.75rem;
+    margin-top: 0.75rem;
+}
+
+/* Reminder Form */
+.reminder-modal-content {
+    max-width: 500px !important;
+}
+
+.reminder-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.reminder-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.reminder-form input,
+.reminder-form select,
+.reminder-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: inherit;
+}
+
+.reminder-form input:focus,
+.reminder-form select:focus,
+.reminder-form textarea:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+}
+
+/* Reminder Notification */
+.reminder-notification {
+    position: fixed;
+    top: -100px;
+    right: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    z-index: 10001;
+    transition: top 0.3s ease;
+    font-weight: 600;
+    max-width: 350px;
+}
+
+.reminder-notification.show {
+    top: 20px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .reminders-content {
+        grid-template-columns: 1fr;
+    }
+
+    .upcoming-reminders {
+        position: static;
+    }
+
+    .reminders-list {
+        grid-template-columns: 1fr;
+    }
+
+    .upcoming-reminder {
+        flex-wrap: wrap;
+    }
+
+    .reminder-countdown {
+        width: 100%;
+        text-align: center;
+        margin-top: 0.5rem;
+    }
+}
+
+/* Subscriptions Styles */
+.subscriptions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.subscriptions-header h2 {
+    margin: 0;
+    color: var(--text-primary);
+}
+
+.subscriptions-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Benefits Section */
+.subscription-benefits {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+}
+
+.subscription-benefits h3 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.benefit-card {
+    text-align: center;
+    padding: 1.5rem;
+    background: var(--bg-alt);
+    border-radius: 12px;
+    transition: transform 0.3s;
+}
+
+.benefit-card:hover {
+    transform: translateY(-4px);
+}
+
+.benefit-icon {
+    font-size: 48px;
+    margin-bottom: 1rem;
+}
+
+.benefit-card h4 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-primary);
+}
+
+.benefit-card p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* Active Subscriptions */
+.active-subscriptions,
+.all-subscriptions {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+}
+
+.active-subscriptions h3,
+.all-subscriptions h3 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+}
+
+.subscriptions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.subscription-card {
+    border: 2px solid var(--border-color);
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+
+.subscription-card.active {
+    border-color: #28a745;
+}
+
+.subscription-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+}
+
+.subscription-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    background: var(--bg-alt);
+}
+
+.subscription-type {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.type-icon {
+    font-size: 40px;
+}
+
+.subscription-type h4 {
+    margin: 0 0 0.25rem 0;
+    color: var(--text-primary);
+}
+
+.subscription-type p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.subscription-price {
+    text-align: right;
+}
+
+.price-with-discount {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.final-price {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--accent-primary);
+}
+
+.discount-badge {
+    display: inline-block;
+    background: #28a745;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 0.5rem;
+}
+
+.subscription-card-body {
+    padding: 1.5rem;
+}
+
+.subscription-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.info-icon {
+    font-size: 18px;
+}
+
+.subscription-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.btn-danger {
+    padding: 10px 20px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-danger:hover {
+    background: #c82333;
+    transform: translateY(-2px);
+}
+
+/* Subscription History */
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: var(--bg-alt);
+    border-radius: 10px;
+    border-left: 4px solid transparent;
+}
+
+.history-item.subscription-active {
+    border-left-color: #28a745;
+}
+
+.history-item.subscription-paused {
+    border-left-color: #ffc107;
+}
+
+.history-item.subscription-cancelled {
+    border-left-color: #dc3545;
+}
+
+.subscription-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.subscription-details {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.subscription-status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.subscription-status.active {
+    background: #d4edda;
+    color: #155724;
+}
+
+.subscription-status.paused {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.subscription-status.cancelled {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Subscription Form */
+.subscription-modal-content {
+    max-width: 600px !important;
+}
+
+.subscription-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.subscription-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.subscription-form input,
+.subscription-form select,
+.subscription-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: inherit;
+}
+
+.subscription-form input:focus,
+.subscription-form select:focus,
+.subscription-form textarea:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+}
+
+.subscription-preview {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin: 1.5rem 0;
+}
+
+.subscription-preview h4 {
+    margin: 0 0 1rem 0;
+    color: var(--text-primary);
+}
+
+.preview-price {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.preview-original {
+    text-decoration: line-through;
+    color: var(--text-secondary);
+    font-size: 18px;
+}
+
+.preview-final {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent-primary);
+}
+
+.preview-savings {
+    margin: 0;
+    color: #28a745;
+    font-weight: 600;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .benefits-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .subscription-card-header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+
+    .subscription-price {
+        text-align: center;
+    }
+
+    .subscription-actions {
+        flex-direction: column;
+    }
+
+    .subscription-actions button {
+        width: 100%;
+    }
+
+    .history-item {
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: flex-start;
+    }
+}
+
+/* Wishlists Styles */
+.wishlists-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.wishlists-header h2 {
+    margin: 0;
+    color: var(--text-primary);
+}
+
+.wishlists-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.wishlist-card {
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 15px;
+    padding: 1.5rem;
+    transition: all 0.3s;
+}
+
+.wishlist-card:hover {
+    border-color: var(--accent-primary);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-4px);
+}
+
+.wishlist-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.wishlist-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.wishlist-title h3 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 18px;
+}
+
+.default-badge {
+    font-size: 16px;
+}
+
+.wishlist-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.wishlist-actions button {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: var(--bg-alt);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s;
+}
+
+.wishlist-actions button:hover {
+    background: var(--accent-primary);
+    transform: scale(1.1);
+}
+
+.wishlist-stats {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: var(--bg-alt);
+    border-radius: 10px;
+}
+
+.wishlist-stats .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--accent-primary);
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.wishlist-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.wishlist-item-preview {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: var(--bg-alt);
+    border-radius: 8px;
+    position: relative;
+}
+
+.item-emoji {
+    font-size: 32px;
+}
+
+.item-name {
+    flex: 1;
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.item-price {
+    font-weight: 600;
+    color: var(--accent-primary);
+}
+
+.btn-remove-item {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 12px;
+    opacity: 0;
+    transition: all 0.2s;
+}
+
+.wishlist-item-preview:hover .btn-remove-item {
+    opacity: 1;
+}
+
+.btn-remove-item:hover {
+    background: #dc3545;
+    color: white;
+}
+
+.more-items {
+    text-align: center;
+    padding: 0.5rem;
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.wishlist-card-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.wishlist-card-actions button {
+    width: 100%;
+}
+
+.empty-wishlist {
+    text-align: center;
+    padding: 2rem 1rem;
+}
+
+.empty-icon {
+    font-size: 64px;
+    margin-bottom: 1rem;
+}
+
+.empty-wishlist p {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+/* Wishlist Select Modal */
+.wishlist-select-content {
+    max-width: 500px !important;
+}
+
+.wishlist-flower-preview {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--bg-alt);
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.preview-emoji {
+    font-size: 48px;
+}
+
+.preview-name {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.wishlist-select-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.wishlist-select-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: var(--bg-alt);
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.wishlist-select-item:not(.has-item):hover {
+    border-color: var(--accent-primary);
+    background: var(--accent-primary);
+    color: white;
+}
+
+.wishlist-select-item.has-item {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.wishlist-info {
+    flex: 1;
+}
+
+.wishlist-select-name {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.wishlist-select-count {
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+.check-icon,
+.add-icon {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.check-icon {
+    color: #28a745;
+}
+
+/* Wishlist Create Modal */
+.wishlist-create-content {
+    max-width: 450px !important;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.form-actions button {
+    flex: 1;
+}
+
+/* Wishlist Button on Flower Cards */
+.wishlist-btn {
+    padding: 8px 16px;
+    background: var(--bg-alt);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    transition: all 0.2s;
+    margin-top: 0.5rem;
+}
+
+.wishlist-btn:hover {
+    border-color: var(--accent-primary);
+    background: var(--accent-primary);
+    color: white;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .wishlists-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .wishlist-stats {
+        gap: 1rem;
+    }
+
+    .stat-value {
+        font-size: 20px;
+    }
+
+    .item-name {
+        font-size: 13px;
+    }
+}
+
+/* Referral Program Styles */
+.referral-card {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+}
+
+.referral-card h2 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-primary);
+}
+
+.referral-subtitle {
+    color: var(--text-secondary);
+    margin: 0 0 2rem 0;
+}
+
+.referral-code-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 2rem;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.code-label {
+    color: white;
+    font-size: 14px;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+}
+
+.referral-code {
+    font-size: 48px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 4px;
+    margin-bottom: 1.5rem;
+    font-family: 'Courier New', monospace;
+}
+
+.btn-copy {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid white;
+}
+
+.btn-copy:hover {
+    background: white;
+    color: var(--accent-primary);
+}
+
+.referral-link-section {
+    background: var(--bg-alt);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+}
+
+.link-label {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.referral-link {
+    padding: 1rem;
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-secondary);
+    font-family: monospace;
+    font-size: 13px;
+    word-break: break-all;
+    margin-bottom: 1rem;
+}
+
+.share-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.share-buttons button {
+    flex: 1;
+}
+
+.referral-benefits {
+    margin-bottom: 2rem;
+}
+
+.referral-benefits h3 {
+    margin: 0 0 1.5rem 0;
+    color: var(--text-primary);
+}
+
+.benefits-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.benefit-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.benefit-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--accent-primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.benefit-text strong {
+    display: block;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.benefit-text p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.referral-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stat-box {
+    background: var(--bg-alt);
+    padding: 1.5rem;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.stat-box .stat-value {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--accent-primary);
+    margin-bottom: 0.5rem;
+}
+
+.stat-box .stat-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.referral-history h3 {
+    margin: 0 0 1rem 0;
+    color: var(--text-primary);
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.referral-history .history-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--bg-alt);
+    border-radius: 10px;
+}
+
+.history-icon {
+    font-size: 24px;
+}
+
+.history-info {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.history-date {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.history-reward {
+    color: #28a745;
+    font-weight: 600;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .referral-code {
+        font-size: 32px;
+        letter-spacing: 2px;
+    }
+
+    .share-buttons {
+        flex-direction: column;
+    }
+
+    .referral-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-box .stat-value {
+        font-size: 28px;
+    }
+}
