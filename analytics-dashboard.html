@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Аналитика - Цветочный Рай</title>
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="admin.css">
+
+    <style>
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .analytics-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .funnel-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .funnel-step {
+            position: relative;
+            background: var(--bg-alt);
+            border-radius: 8px;
+            padding: 1rem;
+            transition: transform 0.3s;
+        }
+
+        .funnel-step:hover {
+            transform: translateX(5px);
+        }
+
+        .funnel-bar {
+            height: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+            margin-top: 0.5rem;
+        }
+
+        .funnel-metrics {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .cohort-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .cohort-table th,
+        .cohort-table td {
+            padding: 0.75rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .cohort-table th {
+            background: var(--bg-alt);
+            font-weight: 600;
+        }
+
+        .cohort-cell {
+            position: relative;
+        }
+
+        .cohort-heatmap {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .heat-100 { background: #28a745; color: white; }
+        .heat-80 { background: #5cb85c; color: white; }
+        .heat-60 { background: #f0ad4e; color: white; }
+        .heat-40 { background: #ff6b6b; color: white; }
+        .heat-20 { background: #d9534f; color: white; }
+
+        .rfm-segments {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .segment-card {
+            background: var(--bg-alt);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .segment-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .segment-count {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .segment-metrics {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .ab-test-card {
+            background: var(--bg-alt);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .test-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .test-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .test-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-running {
+            background: #28a745;
+            color: white;
+        }
+
+        .status-draft {
+            background: #6c757d;
+            color: white;
+        }
+
+        .status-completed {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .variants-comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .variant-box {
+            background: var(--card-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+        }
+
+        .variant-box.winner {
+            border-color: #28a745;
+            background: rgba(40, 167, 69, 0.1);
+        }
+
+        .variant-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .variant-rate {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .variant-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .heatmap-canvas {
+            width: 100%;
+            height: 400px;
+            background: var(--bg-alt);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .heatmap-point {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .scroll-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 1rem;
+            height: 200px;
+        }
+
+        .scroll-bar {
+            flex: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            min-height: 20px;
+        }
+
+        .scroll-bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        .scroll-bar-value {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .chart-container {
+            position: relative;
+            padding-top: 30px;
+            padding-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <div class="admin-logo-icon">📊</div>
+                <div class="admin-logo-text">Аналитика</div>
+            </div>
+            
+            <nav class="admin-nav">
+                <a class="admin-nav-item active" data-section="funnel" onclick="showSection('funnel')">
+                    <span class="admin-nav-icon">🔻</span>
+                    <span>Воронка продаж</span>
+                </a>
+                <a class="admin-nav-item" data-section="cohort" onclick="showSection('cohort')">
+                    <span class="admin-nav-icon">👥</span>
+                    <span>Когортный анализ</span>
+                </a>
+                <a class="admin-nav-item" data-section="rfm" onclick="showSection('rfm')">
+                    <span class="admin-nav-icon">💎</span>
+                    <span>RFM сегментация</span>
+                </a>
+                <a class="admin-nav-item" data-section="heatmap" onclick="showSection('heatmap')">
+                    <span class="admin-nav-icon">🔥</span>
+                    <span>Тепловые карты</span>
+                </a>
+                <a class="admin-nav-item" data-section="abtesting" onclick="showSection('abtesting')">
+                    <span class="admin-nav-icon">🧪</span>
+                    <span>A/B тестирование</span>
+                </a>
+                <a class="admin-nav-item" onclick="window.location.href='/'">
+                    <span class="admin-nav-icon">🏠</span>
+                    <span>На главную</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Header -->
+            <div class="admin-header">
+                <div>
+                    <h1 class="admin-header-title" id="section-title">Воронка продаж</h1>
+                    <p style="margin: 0; color: var(--text-secondary);">Расширенная аналитика и A/B тестирование</p>
+                </div>
+            </div>
+
+            <!-- Funnel Section -->
+            <div id="section-funnel" class="analytics-section">
+                <div class="analytics-card">
+                    <h2 class="card-title">🔻 Воронка конверсии</h2>
+                    <div id="funnel-chart" class="funnel-chart"></div>
+                </div>
+
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <h3 class="card-title">📈 Общая конверсия</h3>
+                        <div style="text-align: center;">
+                            <div style="font-size: 3rem; font-weight: 700; color: #28a745;" id="overall-conversion">0%</div>
+                            <div style="color: var(--text-secondary);">От визита до покупки</div>
+                        </div>
+                    </div>
+
+                    <div class="analytics-card">
+                        <h3 class="card-title">🛒 Конверсия в корзину</h3>
+                        <div style="text-align: center;">
+                            <div style="font-size: 3rem; font-weight: 700; color: #667eea;" id="cart-conversion">0%</div>
+                            <div style="color: var(--text-secondary);">Добавление в корзину</div>
+                        </div>
+                    </div>
+
+                    <div class="analytics-card">
+                        <h3 class="card-title">💳 Конверсия checkout</h3>
+                        <div style="text-align: center;">
+                            <div style="font-size: 3rem; font-weight: 700; color: #ffc107;" id="checkout-conversion">0%</div>
+                            <div style="color: var(--text-secondary);">Переход к оплате</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cohort Section -->
+            <div id="section-cohort" class="analytics-section" style="display: none;">
+                <div class="analytics-card">
+                    <h2 class="card-title">👥 Когортный анализ</h2>
+                    <div style="overflow-x: auto;">
+                        <table class="cohort-table" id="cohort-table"></table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RFM Section -->
+            <div id="section-rfm" class="analytics-section" style="display: none;">
+                <div class="analytics-card">
+                    <h2 class="card-title">💎 RFM сегментация клиентов</h2>
+                    <div class="rfm-segments" id="rfm-segments"></div>
+                </div>
+            </div>
+
+            <!-- Heatmap Section -->
+            <div id="section-heatmap" class="analytics-section" style="display: none;">
+                <div class="analytics-card">
+                    <h2 class="card-title">🔥 Тепловая карта кликов</h2>
+                    <div class="heatmap-canvas" id="heatmap-canvas"></div>
+                </div>
+
+                <div class="analytics-card">
+                    <h2 class="card-title">📜 Глубина прокрутки</h2>
+                    <div class="chart-container">
+                        <div class="scroll-chart" id="scroll-chart"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- A/B Testing Section -->
+            <div id="section-abtesting" class="analytics-section" style="display: none;">
+                <div class="analytics-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h2 class="card-title">🧪 A/B тесты</h2>
+                        <button class="admin-btn admin-btn-primary" onclick="showCreateTestModal()">Создать тест</button>
+                    </div>
+                    <div id="ab-tests-list"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="theme.js"></script>
+    <script src="advanced-analytics.js"></script>
+    <script src="ab-testing.js"></script>
+    <script>
+        // Section navigation
+        function showSection(sectionName) {
+            document.querySelectorAll('.admin-nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector(`[data-section="${sectionName}"]`).classList.add('active');
+            
+            document.querySelectorAll('.analytics-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            document.getElementById(`section-${sectionName}`).style.display = 'block';
+            
+            const titles = {
+                'funnel': 'Воронка продаж',
+                'cohort': 'Когортный анализ',
+                'rfm': 'RFM сегментация',
+                'heatmap': 'Тепловые карты',
+                'abtesting': 'A/B тестирование'
+            };
+            document.getElementById('section-title').textContent = titles[sectionName];
+            
+            // Load section data
+            loadSectionData(sectionName);
+        }
+
+        // Load section data
+        function loadSectionData(section) {
+            switch(section) {
+                case 'funnel': loadFunnelData(); break;
+                case 'cohort': loadCohortData(); break;
+                case 'rfm': loadRFMData(); break;
+                case 'heatmap': loadHeatmapData(); break;
+                case 'abtesting': loadABTestsData(); break;
+            }
+        }
+
+        // Load funnel data
+        function loadFunnelData() {
+            const funnel = window.AdvancedAnalytics.getFunnelAnalysis();
+            const chart = document.getElementById('funnel-chart');
+
+            if (!funnel || !funnel.funnel) {
+                chart.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">Недостаточно данных</p>';
+                return;
+            }
+
+            const steps = Object.entries(funnel.funnel);
+            const maxCount = Math.max(...steps.map(([_, data]) => data.count));
+
+            chart.innerHTML = steps.map(([step, data]) => {
+                const width = (data.count / maxCount) * 100;
+                return `
+                    <div class="funnel-step">
+                        <div style="font-weight: 600; color: var(--text-primary);">${stepNames[step] || step}</div>
+                        <div class="funnel-bar" style="width: ${width}%;"></div>
+                        <div class="funnel-metrics">
+                            <span>Пользователей: ${data.count}</span>
+                            <span>Конверсия: ${data.conversionFromPrevious.toFixed(1)}%</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Update overall metrics
+            document.getElementById('overall-conversion').textContent = 
+                funnel.completionRate.toFixed(1) + '%';
+            
+            if (funnel.funnel.add_to_cart) {
+                document.getElementById('cart-conversion').textContent = 
+                    funnel.funnel.add_to_cart.conversionFromStart.toFixed(1) + '%';
+            }
+
+            if (funnel.funnel.checkout) {
+                document.getElementById('checkout-conversion').textContent = 
+                    funnel.funnel.checkout.conversionFromStart.toFixed(1) + '%';
+            }
+        }
+
+        const stepNames = {
+            'visit': 'Визит на сайт',
+            'catalog_view': 'Просмотр каталога',
+            'product_view': 'Просмотр товара',
+            'add_to_cart': 'Добавление в корзину',
+            'checkout': 'Оформление заказа',
+            'purchase': 'Покупка'
+        };
+
+        // Load cohort data
+        function loadCohortData() {
+            const cohorts = window.AdvancedAnalytics.getCohortAnalysis();
+            const table = document.getElementById('cohort-table');
+
+            if (cohorts.length === 0) {
+                table.innerHTML = '<tr><td>Недостаточно данных для когортного анализа</td></tr>';
+                return;
+            }
+
+            // Build table header
+            const maxPeriods = Math.max(...cohorts.map(c => Object.keys(c.retention).length));
+            let html = '<thead><tr><th>Когорта</th><th>Размер</th>';
+            for (let i = 0; i <= maxPeriods; i++) {
+                html += `<th>Период ${i}</th>`;
+            }
+            html += '</tr></thead><tbody>';
+
+            // Build table rows
+            cohorts.forEach(cohort => {
+                html += `<tr><td>${new Date(cohort.cohort).toLocaleDateString('ru-RU')}</td><td>${cohort.size}</td>`;
+                
+                for (let i = 0; i <= maxPeriods; i++) {
+                    const retention = cohort.retention[i];
+                    if (retention) {
+                        const rate = retention.retentionRate;
+                        const heatClass = rate >= 80 ? 'heat-100' :
+                                         rate >= 60 ? 'heat-80' :
+                                         rate >= 40 ? 'heat-60' :
+                                         rate >= 20 ? 'heat-40' : 'heat-20';
+                        html += `<td><span class="cohort-heatmap ${heatClass}">${rate.toFixed(0)}%</span></td>`;
+                    } else {
+                        html += '<td>-</td>';
+                    }
+                }
+                html += '</tr>';
+            });
+
+            html += '</tbody>';
+            table.innerHTML = html;
+        }
+
+        // Load RFM data
+        function loadRFMData() {
+            const segments = window.AdvancedAnalytics.getRFMSegmentsSummary();
+            const container = document.getElementById('rfm-segments');
+
+            const segmentColors = {
+                'Champions': '#28a745',
+                'Loyal Customers': '#5cb85c',
+                'At Risk': '#ff6b6b',
+                'Can\'t Lose Them': '#dc3545',
+                'Promising': '#667eea',
+                'New Customers': '#17a2b8',
+                'Potential Loyalists': '#764ba2',
+                'Hibernating': '#ffc107',
+                'Lost': '#6c757d'
+            };
+
+            container.innerHTML = Object.entries(segments).map(([name, data]) => `
+                <div class="segment-card" style="border-left-color: ${segmentColors[name] || '#667eea'};">
+                    <div class="segment-name">${name}</div>
+                    <div class="segment-count">${data.count}</div>
+                    <div class="segment-metrics">
+                        💰 Ср. выручка: ${data.avgMonetary.toLocaleString()} ₽<br>
+                        📦 Ср. заказов: ${data.avgFrequency}<br>
+                        📅 Ср. recency: ${data.avgRecency} дней
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load heatmap data
+        function loadHeatmapData() {
+            const heatmap = window.AdvancedAnalytics.getHeatmapData();
+            const canvas = document.getElementById('heatmap-canvas');
+
+            if (heatmap.totalClicks === 0) {
+                canvas.innerHTML = '<div style="display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-secondary);">Недостаточно данных о кликах</div>';
+            } else {
+                canvas.innerHTML = '';
+                const maxCount = Math.max(...heatmap.clusters.map(c => c.count));
+
+                heatmap.clusters.forEach(cluster => {
+                    const point = document.createElement('div');
+                    point.className = 'heatmap-point';
+                    const intensity = cluster.count / maxCount;
+                    point.style.left = (cluster.x / window.innerWidth * 100) + '%';
+                    point.style.top = (cluster.y / 400 * 100) + '%';
+                    point.style.background = `rgba(255, 0, 0, ${0.3 + intensity * 0.7})`;
+                    point.style.width = (20 + intensity * 30) + 'px';
+                    point.style.height = (20 + intensity * 30) + 'px';
+                    point.title = `Кликов: ${cluster.count}`;
+                    canvas.appendChild(point);
+                });
+            }
+
+            // Load scroll depth
+            const scrollData = window.AdvancedAnalytics.getScrollDepthDistribution();
+            const scrollChart = document.getElementById('scroll-chart');
+
+            const maxScroll = Math.max(...Object.values(scrollData));
+            scrollChart.innerHTML = Object.entries(scrollData).map(([range, count]) => {
+                const height = maxScroll > 0 ? (count / maxScroll) * 100 : 0;
+                return `
+                    <div class="scroll-bar" style="height: ${height}%;">
+                        <div class="scroll-bar-value">${count}</div>
+                        <div class="scroll-bar-label">${range}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Load A/B tests data
+        function loadABTestsData() {
+            const tests = window.ABTesting.getAllTests();
+            const container = document.getElementById('ab-tests-list');
+
+            if (tests.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--text-secondary); padding: 3rem;">Нет активных A/B тестов. Создайте первый тест!</p>';
+                return;
+            }
+
+            container.innerHTML = tests.map(test => {
+                const results = window.ABTesting.getTestResults(test.id);
+                return `
+                    <div class="ab-test-card">
+                        <div class="test-header">
+                            <div>
+                                <div class="test-name">${test.name}</div>
+                                <div style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.25rem;">
+                                    ${test.description}
+                                </div>
+                            </div>
+                            <span class="test-status status-${test.status}">${statusNames[test.status]}</span>
+                        </div>
+
+                        <div style="margin-bottom: 1rem;">
+                            <span style="color: var(--text-secondary);">Участников: ${test.participants}</span>
+                        </div>
+
+                        ${results.variants.length > 0 ? `
+                            <div class="variants-comparison">
+                                ${results.variants.map(variant => `
+                                    <div class="variant-box ${variant === results.winner ? 'winner' : ''}">
+                                        <div class="variant-name">
+                                            ${variant.name}
+                                            ${variant === results.winner ? ' 🏆' : ''}
+                                        </div>
+                                        <div class="variant-rate">${variant.conversionRate}%</div>
+                                        <div class="variant-label">
+                                            ${variant.conversions} / ${variant.impressions}
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+
+                        ${results.statisticalSignificance && results.statisticalSignificance.significant ? `
+                            <div style="margin-top: 1rem; padding: 1rem; background: #d4edda; color: #155724; border-radius: 8px; font-size: 0.9rem;">
+                                ✅ Статистически значимый результат (${results.statisticalSignificance.confidence}% confidence)
+                            </div>
+                        ` : ''}
+
+                        <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                            ${test.status === 'draft' ? `<button class="admin-btn admin-btn-success admin-btn-sm" onclick="startTest('${test.id}')">Запустить</button>` : ''}
+                            ${test.status === 'running' ? `<button class="admin-btn admin-btn-secondary admin-btn-sm" onclick="pauseTest('${test.id}')">Приостановить</button>` : ''}
+                            ${test.status === 'running' || test.status === 'paused' ? `<button class="admin-btn admin-btn-primary admin-btn-sm" onclick="completeTest('${test.id}')">Завершить</button>` : ''}
+                            <button class="admin-btn admin-btn-danger admin-btn-sm" onclick="deleteTest('${test.id}')">Удалить</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        const statusNames = {
+            'draft': 'Черновик',
+            'running': 'Активен',
+            'paused': 'Приостановлен',
+            'completed': 'Завершен'
+        };
+
+        // A/B test actions
+        function startTest(testId) {
+            if (window.ABTesting.startABTest(testId)) {
+                loadABTestsData();
+            }
+        }
+
+        function pauseTest(testId) {
+            if (window.ABTesting.pauseABTest(testId)) {
+                loadABTestsData();
+            }
+        }
+
+        function completeTest(testId) {
+            if (confirm('Вы уверены что хотите завершить тест?')) {
+                if (window.ABTesting.completeABTest(testId)) {
+                    loadABTestsData();
+                }
+            }
+        }
+
+        function deleteTest(testId) {
+            if (confirm('Вы уверены что хотите удалить тест?')) {
+                if (window.ABTesting.deleteTest(testId)) {
+                    loadABTestsData();
+                }
+            }
+        }
+
+        function showCreateTestModal() {
+            alert('Функция создания тестов доступна через API:\n\nwindow.ABTesting.createABTest({...})\n\nИли используйте демо-тесты:\nwindow.ABTesting.createSampleTests()');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFunnelData();
+        });
+    </script>
+</body>
+</html>
