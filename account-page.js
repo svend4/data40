@@ -27,6 +27,9 @@ function initializeAccountPage() {
     // Load orders
     loadOrders();
 
+    // Load loyalty program
+    loadLoyalty();
+
     // Load favorites
     loadFavorites();
 
@@ -249,4 +252,12 @@ function getStatusText(status) {
         'delivered': 'Доставлен'
     };
     return statusMap[status] || status;
+}
+
+// Load loyalty program
+function loadLoyalty() {
+    const user = AuthAPI.getCurrentUser();
+    if (typeof LoyaltyAPI !== 'undefined') {
+        LoyaltyAPI.renderLoyaltyWidget(user.id);
+    }
 }

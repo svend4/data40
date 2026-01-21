@@ -41,6 +41,7 @@
                         <nav class="account-nav">
                             <a href="#" class="active" onclick="showSection('profile'); return false;">📋 Профиль</a>
                             <a href="#" onclick="showSection('orders'); return false;">📦 Мои заказы</a>
+                            <a href="#" onclick="showSection('loyalty'); return false;">🎁 Программа лояльности</a>
                             <a href="#" onclick="showSection('favorites'); return false;">❤️ Избранное</a>
                             <a href="#" onclick="showSection('addresses'); return false;">📍 Адреса</a>
                             <a href="#" onclick="AuthAPI.logout(); return false;">🚪 Выйти</a>
@@ -73,6 +74,11 @@
                         <section id="orders-section" class="account-section">
                             <h2>История заказов</h2>
                             <div id="orders-list" class="orders-list"></div>
+                        </section>
+
+                        <!-- Loyalty Section -->
+                        <section id="loyalty-section" class="account-section">
+                            <div id="loyalty-widget"></div>
                         </section>
 
                         <!-- Favorites Section -->
@@ -110,6 +116,7 @@
     <script src="theme.js"></script>
     <script src="auth.js"></script>
     <script src="script.js"></script>
+    <script src="loyalty.js"></script>
     <script src="account-page.js"></script>
 </body>
 </html>

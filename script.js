@@ -1484,6 +1484,12 @@ function submitOrder(event) {
 
     console.log('Order submitted:', orderNumber, orderData);
 
+    // Award loyalty points if user is logged in
+    if (typeof AuthAPI !== 'undefined' && AuthAPI.isLoggedIn() && typeof LoyaltyAPI !== 'undefined') {
+        const user = AuthAPI.getCurrentUser();
+        LoyaltyAPI.addPointsForPurchase(user.id, finalTotal);
+    }
+
     // Show success message
     const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
     showNotification('Заказ успешно оформлен!');
